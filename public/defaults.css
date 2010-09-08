@@ -1,0 +1,34 @@
+/* defaults.css - reset the default browser styling */
+
+* 
+{ margin:0; padding:0; } 
+
+body, html 
+{ width: 100%; height: 100%; min-width: 100%; min-height: 100%; }
+
+:link,:hover,:visited,:focus,:active
+{ text-decoration:none; }
+
+ul,ol,li
+{ list-style:none }
+
+a, input
+{ outline: none !important; }
+
+label
+{ display: inline; }
+
+h1,h2,h3,h4,h5,h6,pre,code,kbd,input,select,textarea,table
+{ font-size: 12px; font-weight: normal; }
+
+dl,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,div,p,blockquote,legend
+{ margin:0; padding:0; border: none; background: none;}
+
+a img,:link img,:visited img,abbr,acronym,fieldset,iframe
+{ border:0; outline: none; }
+
+address,abbr,cite
+{ font-style:normal }
+
+caption
+{ text-align:left; }

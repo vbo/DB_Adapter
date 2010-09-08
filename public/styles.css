@@ -1,0 +1,204 @@
+html, body
+{ width: 100%; height: 100%; margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif;
+  color: #222222; min-width: 1000px; }
+
+a
+{ text-decoration: underline !important; color: #0071bb; }
+
+a:hover, a.this
+{ color: #f15a27; }
+
+#wrap
+{ background-image: url("images/bg.jpg"); background-position: top left; background-repeat: repeat-x; }
+
+.holder
+{ margin: 0 auto; width: 1000px; position: relative; }
+
+h1.top_header
+{ font-size: 20px; color: #fefefe; font-weight: bold; padding: 10px; margin-left: 5px; padding-top: 30px;
+  /* Solid bg for users with disabled images */
+  background-color: #afcae4;
+  /* To override solid color */
+  background-image: url("images/bg.jpg"); background-position: top left; background-repeat: repeat-x; padding-bottom: 10px; }
+
+h1.top_header a
+{ color: #fefefe; font-weight: normal; }
+
+h1.top_header a:hover, h1.top_header a.this
+{ color: #ffff77; font-size: 25px; }
+
+h1.top_header a.m
+{ color: #fefefe; font-size: 20px; margin-left: 30px; height: 64px; display: block; }
+
+#breadcrumbs
+{ background-image: url("images/arrow.jpg"); background-repeat: no-repeat; background-position: 0 7px;
+  padding-left: 30px; margin-left: 30px; margin-top: 12px; margin-bottom: -5px; display: block; }
+
+
+/**
+ * Top menu
+ */
+
+.menu
+{ height: 60px; background-image: url("images/topmenu_bg.jpg"); width: 982px; margin: 5px auto 5px auto; background-color: gray; position: relative; left: -1px; }
+
+.menu a
+{ float: right; padding: 18px 7px 0 7px; margin-right: 15px; font-size: 18px; color: white;
+  background-image: url("images/topmenu_this_bg.jpg"); height: 42px; background-repeat: repeat-x; background-position: 100px 100px; }
+
+.menu a:hover, .menu a.this, .menu a.root
+{ background-position: 0; }
+
+
+/**
+ * Page body
+ */
+
+#body
+{ background-image: url("images/body_top_bg.png"); background-repeat: no-repeat; padding-top: 119px; width: 999px; margin: 0 auto; }
+
+#sbody
+{ background-image: url("images/body_bg.png"); background-repeat: repeat-y; width: 999px; margin: 0 auto; }
+
+#ssbody
+{ background-image: url("images/body_foo_bg.png"); background-repeat: no-repeat; width: 999px;
+  margin: 0 auto; background-position: left bottom; position: relative; top: 113px; padding-bottom: 20px;
+  border-bottom: 1px solid white;  /* GoogleChrome bugfix */
+}
+
+
+/**
+ * Footer
+ */
+
+#footer
+{ margin-top: 120px; padding: 20px; padding-bottom: 30px; font-size: 12px; position: relative; }
+
+#footer ul
+{ padding-left: 0; }
+
+#footer ul li
+{ list-style-type: none; }
+
+#footer .opensource
+{ position: absolute; top: 0; left: 50%; margin-left: -40px; display: block; width: 80px; }
+
+#partners
+{ margin-top: -7px; right: 30px; position: absolute; }
+
+#partners img
+{ float: right; clear: both; }
+
+/**
+ * Layout
+ */
+
+#docs_layout
+{ border-collapse: collapse; width: 94%; margin: 0 auto; position: relative; top: -190px; margin-bottom: -130px; }
+
+#docs_layout .toc
+{ font-size: 18px; width: 290px; float: left; }
+
+#docs_layout .content
+{ padding-left: 300px; min-height: 1000px; }
+
+#coholder
+{ width: 640px; }
+
+#docs_layout .toc ul
+{ padding-left: 0; padding-bottom: 20px; }
+
+#docs_layout .toc ul ul
+{ padding: 5px 0 5px 25px; }
+
+#docs_layout .toc li
+{ list-style-type: none; padding-bottom: 4px; }
+
+#docs_layout .toc li li
+{  padding-bottom: 0; }
+
+#docs_layout .toc ul a
+{ display: block; }
+
+
+/**
+ * Additions
+ */
+
+#orphus
+{ margin-top: 15px; display: block; }
+
+#its_valid
+{ margin-top: 15px; }
+
+#hat_ad
+{ position: absolute; top: 15px; right: 55px; cursor: pointer; }
+
+#download_button
+{ background: url("images/download_button.jpg") no-repeat 0 0; display: block; 
+  padding-left: 270px; padding-top: 4px; height: 60px; color: #0071bb; font-size: 13px; overflow: hidden; }
+
+#download_button:hover
+{ background-position: 0 -65px; }
+
+.yandexform
+{ float: left; position: relative; top: 14px; left: 20px; width: 250px; }
+
+
+/**
+ * Content
+ */
+
+.content
+{ color: black; font-size: 16px; }
+
+.content p
+{ margin-bottom: 15px; }
+
+.content code
+{ font-size: 14px; font-family: Helvetica, Arial, sans-serif; color: #333333; }
+
+.content ul
+{ padding-bottom: 15px; }
+
+.content ul li
+{ padding-left: 5px; list-style-type: square; margin-left: 15px; padding-bottom: 2px; }
+
+.content h1
+{ font-size: 26px; padding-bottom: 16px; }
+
+h2
+{ font-size: 22px; padding-bottom: 10px; padding-top: 5px; }
+
+h3
+{ font-size: 18px; padding-bottom: 7px; font-weight: bold; padding-top: 15px; }
+
+.meta_ui
+{ display: block; padding: 10px; height: 20px; position: relative; border: 1px solid #e2e1d5; margin-top: 40px; }
+
+.view_source
+{ float: right; }
+
+.content pre
+{ overflow: auto; padding: 15px; margin-bottom: 15px; min-height: 20px; /* For one-line code examples in IE7 and Opera */
+  -moz-border-radius-bottomleft: 2px; -moz-border-radius-bottomright: 2px; -moz-border-radius-topleft:2px;
+  -moz-border-radius-topright: 2px; background-color: #fbf9ea; border: 1px solid #e2e1d5; }
+
+.content pre code
+{ background: none; }
+
+/**
+ * IE hacks
+ */
+
+*+ html #breadcrumbs
+{ line-height: 40px; }
+
+*+ html #docs_layout .content
+{ padding-left: 0; }
+
+* html #docs_layout .content
+{ padding-left: 0; }
+
+* html #docs_layout .toc li
+{ border-bottom: 1px solid white; }
