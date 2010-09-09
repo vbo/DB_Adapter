@@ -20,34 +20,10 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
         ),
     );
 
-    function setUp ()
+    public function setUp ()
     {
-        $this->connect();
-        $this->createTestTables();
-    }
-
-    function connect ()
-    {
-        $this->DB = DB_Adapter_Factory::connect(
-            'mysql://insourceru_dev:vb31337@localhost/insourceru_dev?charset=utf8&ident_prefix=test_'
-        );
-    }
-
-    function createTestTables ()
-    {
-        @$this->DB->query("DROP TABLE test_users");
-        @$this->DB->query("DROP TABLE test_tree");
-
-        $this->DB->query("
-            CREATE TABLE test_users (
-                id     int(11)      NOT NULL  auto_increment,
-                login  varchar(100) NOT NULL,
-                mail   varchar(400) NOT NULL,
-                age    int(11)      NOT NULL,
-                PRIMARY KEY (id)
-            )
-            ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-        );
+        $this->_connect();
+        $this->_createTestTables();
     }
 
     function testConnectionSucceeded ()
@@ -61,6 +37,46 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
         $failed = DB_Adapter_Factory::connect('mysql://not_existed:test@localhost/test?charset=utf8');
     }
 
+    public function testGetLastQuery()
+    {
+        $this->DB->query('SELECT * FROM test_user');
+        $this->assertEquals('SELECT * FROM test_user', $this->DB->getLastQuery());
+
+        @$this->DB->query('BAD QUERY');
+        $this->assertEquals('BAD QUERY', $this->DB->getLastQuery());
+    }
+
+    public function testBlob()
+    {
+        $b = $this->DB->blob();
+        $this->assertTrue(!is_null($b));
+        $this->assertTrue($b instanceof DB_Adapter_Generic_Blob);
+    }
+
+    private function _connect ()
+    {
+        $this->DB = DB_Adapter_Factory::connect(
+            'mysql://insourceru_dev:vb31337@localhost/insourceru_dev?charset=utf8&ident_prefix=test_'
+        );
+    }
+
+    private function _createTestTables ()
+    {
+        @$this->DB->query("DROP TABLE test_user");
+        @$this->DB->query("DROP TABLE test_tree");
+
+        $this->DB->query("
+            CREATE TABLE test_user (
+                id     int(11)      NOT NULL  auto_increment,
+                login  varchar(100) NOT NULL,
+                mail   varchar(400) NOT NULL,
+                age    int(11)      NOT NULL,
+                PRIMARY KEY (id)
+            )
+            ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+        );
+    }    
+
     function testIdentPrefixCorrect ()
     {
         $this->assertEquals($this->DB->setIdentPrefix(), 'test_');
@@ -68,18 +84,18 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
 
     function testIdentPrefixPH ()
     {
-        @$this->DB->select("SELECT * FROM ?_users");
-        $this->assertEquals($this->DB->getLastQuery(), "SELECT * FROM test_users");
+        @$this->DB->select("SELECT * FROM ?_user");
+        $this->assertEquals($this->DB->getLastQuery(), "SELECT * FROM test_user");
     }
 
     function testListPH ()
     {
-        $this->createTestTables();
+        $this->_createTestTables();
 
         foreach($this->users_tbl_data as $u)
         {
             $this->DB->query("
-                INSERT INTO ?_users
+                INSERT INTO ?_user
                 VALUES (?a)",
 
                 array_values($u)
@@ -87,7 +103,7 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(
-            $this->DB->select("SELECT * FROM ?_users"),
+            $this->DB->select("SELECT * FROM ?_user"),
             $this->users_tbl_data
         );
     }
