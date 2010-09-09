@@ -79,12 +79,10 @@ abstract class DB_Adapter_Generic_DB
      * Returns last user query text (for debug porposes)
      * @return string
      */
-    public
-    function getLastQuery ()
+    public function getLastQuery ()
     {
         $q = $this->_lastQuery;
-        if (is_array($q))
-        {
+        if (is_array($q)) {
             $this->_expandPlaceholders($q);
             $q = $q[0];
         }
@@ -96,8 +94,7 @@ abstract class DB_Adapter_Generic_DB
      * Create new blob
      * @return DB_Adapter_Generic_Blob
      */
-    public
-    function blob ($blob_id = null)
+    public function blob ($blob_id = null)
     {
         return $this->_performNewBlob($blob_id);
     }
@@ -106,8 +103,7 @@ abstract class DB_Adapter_Generic_DB
      * Create new transaction.
      * @return mixed
      */
-    public
-    function transaction ($mode=null)
+    public function transaction ($mode=null)
     {
         $this->_logQuery('-- START TRANSACTION ' . $mode);
         return $this->_performTransaction($mode);
@@ -117,8 +113,7 @@ abstract class DB_Adapter_Generic_DB
      * Commit the transaction.
      * @return mixed
      */
-    public
-    function commit ()
+    public function commit ()
     {
         $this->_logQuery('-- COMMIT');
         return $this->_performCommit();
@@ -128,8 +123,7 @@ abstract class DB_Adapter_Generic_DB
      * Rollback the transaction.
      * @return mixed
      */
-    public
-    function rollback ()
+    public function rollback ()
     {
         $this->_logQuery('-- ROLLBACK');
         return $this->_performRollback();
@@ -141,12 +135,10 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed   [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash[]  $result
      */
-    public
-    function select ($query)
+    public function select ($query)
     {
         $total = false;
         $args  = func_get_args();
-        
         return $this->_query($args, $total);
     }
 
@@ -157,13 +149,11 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash[] $result
      */
-    public
-    function selectPage (&$total, $query)
+    public function selectPage (&$total, $query)
     {
         $total = true;
         $args  = func_get_args();
         array_shift($args);
-
         return $this->_query($args, $total);
     }
 
@@ -176,8 +166,7 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash $result
      */
-    public
-    function selectRow ($query)
+    public function selectRow ($query)
     {
         $total = false;
         $args  = func_get_args();
@@ -185,8 +174,7 @@ abstract class DB_Adapter_Generic_DB
 
         if (!is_array($rows)) return $rows;
         if (!count($rows))    return array();
-
-        reset($rows);        
+        reset($rows);
         return current($rows);
     }
 
@@ -196,14 +184,12 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return array  $result
      */
-    public
-    function selectCol ($query)
+    public function selectCol ($query)
     {
         $total = false;
         $args  = func_get_args();
         $rows  = $this->_query($args, $total);
         if (!is_array($rows)) return $rows;
-
         $this->_shrinkLastArrayDimensionCallback($rows);        
         return $rows;
     }
@@ -215,21 +201,19 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return scalar $result
      */
-    public
-    function selectCell ($query)
+    public function selectCell ($query)
     {
         $total = false;
         $args  = func_get_args();
         $rows  = $this->_query($args, $total);
 
         if (!is_array($rows)) return $rows;
-        if (!count($rows))    return null;
-
+        if (!count($rows)) return null;
         reset($rows);
         $row = current($rows);
-        if (!is_array($row)) return $row;
-        
+        if (!is_array($row)) return $row;        
         reset($row);
+
         return current($row);
     }
 
@@ -239,12 +223,10 @@ abstract class DB_Adapter_Generic_DB
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return scalar $result
      */
-    public
-    function query ($query)
+    public function query ($query)
     {
         $total = false;
-        $args  = func_get_args();
-        
+        $args  = func_get_args();        
         return $this->_query($args, $total);
     }
 
@@ -256,8 +238,7 @@ abstract class DB_Adapter_Generic_DB
      * @param  bool   $isIdent Its identifier value?
      * @return string $escaped
      */
-    public
-    function escape ($s, $isIdent=false)
+    public function escape ($s, $isIdent=false)
     {
         return $this->_performEscape($s, $isIdent);
     }
@@ -268,12 +249,10 @@ abstract class DB_Adapter_Generic_DB
      * @param  DB_Adapter_LoggerI/null $logger New logger instance
      * @return DB_Adapter_LoggerI/null $logger Prev logger instance
      */
-    public
-    function setLogger ($logger)
+    public function setLogger ($logger)
     {
         $prev = $this->_logger;
-        $this->_logger = $logger;
-        
+        $this->_logger = $logger;        
         return $prev;
     }
 
@@ -282,8 +261,7 @@ abstract class DB_Adapter_Generic_DB
      * @param  string $prx New prefix
      * @return string $prx Prev prefix
      */
-    public
-    function setIdentPrefix ($prx=null)
+    public function setIdentPrefix ($prx=null)
     {
         $old = $this->_identPrefix;
         if (!is_null($prx)) $this->_identPrefix = $prx;
@@ -294,8 +272,7 @@ abstract class DB_Adapter_Generic_DB
      * Returns various statistical information.
      * @return array
      */
-    public
-    function getStatistics ()
+    public function getStatistics ()
     {
         return $this->_statistics;
     }
@@ -303,20 +280,17 @@ abstract class DB_Adapter_Generic_DB
     /**
      * @return string
      */
-    protected abstract
-    function _performEscape ($s, $isIdent=false);
+    protected abstract function _performEscape ($s, $isIdent=false);
 
     /**
      * @return DB_Adapter_Generic_Blob $blob
      */
-    protected abstract
-    function _performNewBlob ($blobid=null);
+    protected abstract function _performNewBlob ($blobid=null);
 
     /**
      * @return array $fields List of BLOB fields names in result set
      */
-    protected abstract
-    function _performGetBlobFieldNames ($result);
+    protected abstract function _performGetBlobFieldNames ($result);
 
     /**
      * Transform query different way specified by $how.
@@ -324,8 +298,7 @@ abstract class DB_Adapter_Generic_DB
      * @param array& $queryMain
      * @param string $how
      */
-    protected abstract
-    function _performTransformQuery (array& $queryMain, $how);
+    protected abstract function _performTransformQuery (array& $queryMain, $how);
 
     /**
      * Must return:
@@ -334,8 +307,7 @@ abstract class DB_Adapter_Generic_DB
      * - For error  queries: null.
      * @return mixed $result
      */
-    protected abstract
-    function _performQuery (array $queryMain);
+    protected abstract function _performQuery (array $queryMain);
 
     /**
      * Fetch ONE NEXT row from result-set.
@@ -347,29 +319,25 @@ abstract class DB_Adapter_Generic_DB
      * - For error  queries: throw an Exception.
      * @return mixed $result
      */
-    protected abstract
-    function _performFetch ($result);
+    protected abstract function _performFetch ($result);
 
     /**
      * Start new transaction.
      * @return mixed $result
      */
-    protected abstract
-    function _performTransaction ($mode=null);
+    protected abstract function _performTransaction ($mode=null);
 
     /**
      * Commit the transaction.
      * @return mixed $result
      */
-    protected abstract
-    function _performCommit ();
+    protected abstract function _performCommit ();
 
     /**
      * Rollback the transaction.
      * @return mixed $result
      */
-    protected abstract
-    function _performRollback ();
+    protected abstract function _performRollback ();
 
     /**
      * Return regular expression which matches ignored query parts.
@@ -377,8 +345,7 @@ abstract class DB_Adapter_Generic_DB
      * default ''
      * @return string
      */
-    protected
-    function _performGetPlaceholderIgnoreRe ()
+    protected function _performGetPlaceholderIgnoreRe ()
     {
         return '';
     }
@@ -389,8 +356,7 @@ abstract class DB_Adapter_Generic_DB
      * @param  int $n Number of native placeholder from the beginning of the query (begins from 0!).
      * @return string String representation of native placeholder marker (by default - '?').
      */
-    protected
-    function _performGetNativePlaceholderMarker ($n)
+    protected function _performGetNativePlaceholderMarker ($n)
     {
         return '?';
     }
@@ -399,66 +365,49 @@ abstract class DB_Adapter_Generic_DB
      * @see _performQuery().
      * @return array
      */
-    private
-    function _query (array $query, &$total)
+    private function _query (array $query, &$total)
     {
         $this->attributes = $this->_transformQuery($query, 'GET_ATTRIBUTES');
         if ($total) $this->_transformQuery($query, 'CALC_TOTAL');
 
         $this->_logQuery($query);
-        $qStart    = $this->_microtime();
-        $result    = $this->_performQuery($query);
+        $qStart = $this->_microtime();
+        $result = $this->_performQuery($query);
         $fetchTime = $firstFetchTime = 0;
 
-        if (is_resource($result))
-        {
+        if (is_resource($result)) {
             $rows = array();
-
             $fStart = $this->_microtime();
             $row    = $this->_performFetch($result);
-
             $firstFetchTime = $this->_microtime() - $fStart;
 
-            if (!is_null($row))
-            {
+            if (!is_null($row)) {
                 $rows[] = $row;
-                while ($row=$this->_performFetch($result))
-                {
+                while ($row=$this->_performFetch($result)) {
                     $rows[] = $row;
                 }
             }
 
             $fetchTime = $this->_microtime() - $fStart;
-        }
-        else
-        {
+        } else {
             $rows = $result;
         }
 
         $queryTime = $this->_microtime() - $qStart;
-        $this->_logQueryStat(
-            $queryTime,
-            $fetchTime,
-            $firstFetchTime,
-            $rows
-        );
+        $this->_logQueryStat($queryTime, $fetchTime, $firstFetchTime, $rows);
 
         $blobs_exist = is_array($rows) && !empty($this->attributes['BLOB_OBJ']);
-        if ($blobs_exist)
-        {
+        if ($blobs_exist) {
             $blobFieldNames = $this->_performGetBlobFieldNames($result);
-            foreach ($blobFieldNames as $name)
-            {
-                for ($r = count($rows)-1; $r>=0; $r--)
-                {
+            foreach ($blobFieldNames as $name) {
+                for ($r = count($rows)-1; $r>=0; $r--) {
                     $rows[$r][$name] =& $this->_performNewBlob($rows[$r][$name]);
                 }
             }
         }
 
         $result = $this->_transformResult($rows);
-        if (is_array($result) && $total)
-        {
+        if (is_array($result) && $total) {
             $this->_transformQuery($query, 'GET_TOTAL');            
             $total = $this->selectCell($query);
         }
@@ -472,24 +421,21 @@ abstract class DB_Adapter_Generic_DB
      * @return mixed
      * @todo Do it without switch stmt?
      */
-    private
-    function _transformQuery (array& $query, $how)
+    private function _transformQuery (array& $query, $how)
     {
         // Do overriden transformation.
         $result = $this->_performTransformQuery($query, $how);
         if ($result === true) return $result;
 
         // Do common transformations.
-        switch ($how)
-        {
+        switch ($how) {
             case 'GET_ATTRIBUTES':
             {
                 $options = array();
-                $q       = $query[0];
-                $m       = null;
+                $q = $query[0];
+                $m = null;
 
-                while (preg_match('/^ \s* -- [ \t]+ (\w+): ([^\r\n]+) [\r\n]* /sx', $q, $m))
-                {
+                while (preg_match('/^ \s* -- [ \t]+ (\w+): ([^\r\n]+) [\r\n]* /sx', $q, $m)) {
                     $options[$m[1]] = trim($m[2]);
                     $q = substr($q, strlen($m[0]));
                 }
@@ -505,43 +451,33 @@ abstract class DB_Adapter_Generic_DB
      * Modify $queryAndArgs.
      * @return void
      */
-    protected
-    function _expandPlaceholders (&$queryAndArgs, $useNative=false)
+    protected function _expandPlaceholders (&$queryAndArgs, $useNative=false)
     {
         $cacheCode = null;
-
-        // @todo Determine, why we use PH cache only with logging
-        if ($this->_logger)
-        {
+        // @todo Determine, why Dmitry use PH cache only with logging
+        if ($this->_logger) {
             // Serialize is much faster than placeholder expansion. So use caching.
             $cacheCode = md5(serialize($queryAndArgs) . '|' . $useNative . '|' . $this->_identPrefix);
-
-            if (isset($this->_placeholderCache[$cacheCode]))
-            {
+            if (isset($this->_placeholderCache[$cacheCode])) {
                 $queryAndArgs = $this->_placeholderCache[$cacheCode];
                 return;
             }
         }
 
         if (!is_array($queryAndArgs)) $queryAndArgs = array($queryAndArgs);
-
         $this->_placeholderNativeArgs = $useNative ? array() : null;
         $this->_placeholderArgs       = array_reverse($queryAndArgs);
 
         // array_pop is faster than array_shift
         $query = array_pop($this->_placeholderArgs); 
-
         // Do all the work.
         $this->_placeholderNoValueFound = false;
         $query = $this->_expandPlaceholdersFlow($query);
 
-        if ($useNative)
-        {
+        if ($useNative) {
             array_unshift($this->_placeholderNativeArgs, $query);
             $queryAndArgs = $this->_placeholderNativeArgs;
-        } 
-        else
-        {
+        } else {
             $queryAndArgs = array($query);
         }
 
@@ -554,8 +490,7 @@ abstract class DB_Adapter_Generic_DB
      * Imply that all interval variables (_placeholder_*) already prepared.
      * May be called recurrent!
      */
-    private
-    function _expandPlaceholdersFlow ($query)
+    private function _expandPlaceholdersFlow ($query)
     {
         $re = '{
             (?>
@@ -599,41 +534,35 @@ abstract class DB_Adapter_Generic_DB
      * string _expandPlaceholdersCallback(list $m)
      * Internal function to replace placeholders (see preg_replace_callback).
      */
-    function _expandPlaceholdersCallback ($m)
+    private function _expandPlaceholdersCallback ($m)
     {
         // Placeholder.
         if (!empty($m[2]))
         {
             $type = $m[3];
-
             // Idenifier prefix.
             if ($type == '_') return $this->_identPrefix;
-
             // Value-based placeholder.
             if (!$this->_placeholderArgs) return 'DB_ADAPTER_ERROR_NO_VALUE';
-
             $value = array_pop($this->_placeholderArgs);
-
             // Skip this value?
-            if (DB_ADAPTER_SKIP === $value)
-            {
+            if (DB_ADAPTER_SKIP === $value) {
                 $this->_placeholderNoValueFound = true;
                 return '';
             }
 
             // First process guaranteed non-native placeholders.
-            switch ($type) 
-            {
+            switch ($type) {
                 case 'a': // Array
 
-                    if (!$value)           $this->_placeholderNoValueFound = true;
+                    if (!$value) $this->_placeholderNoValueFound = true;
                     if (!is_array($value)) return 'DB_ADAPTER_ERROR_VALUE_NOT_ARRAY';
 
                     $parts = array();
-                    foreach ($value as $k=>$v)
-                    {
+                    foreach ($value as $k=>$v) {
                         if     ($v === null)     $v = 'NULL';
                         elseif (is_string($v))   $v = $this->escape($v);
+                        elseif (is_bool($v))     $v = (int) $v;
                         elseif (!is_numeric($v)) $v = 'DB_ADAPTER_ERROR_VALUE';
                         
                         if (!is_int($k))

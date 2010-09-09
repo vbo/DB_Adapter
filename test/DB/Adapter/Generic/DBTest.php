@@ -5,18 +5,20 @@ require_once 'DB/Adapter/Factory.php';
 class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
 {
     public $DB;
-    public $users_tbl_data = array(
+    public $testUsers = array(
         array(
             'id'    => 1,
             'login' => 'vb',
             'mail'  => 'vb@in-source.ru',
             'age'   => 20,
+            'active'=> 0
         ),
         array(
             'id'    => 2,
             'login' => 'pavel',
             'mail'  => 'example-pavel@gmail.com',
             'age'   => 24,
+            'active'=> 1
         ),
     );
 
@@ -71,6 +73,7 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
                 login  varchar(100) NOT NULL,
                 mail   varchar(400) NOT NULL,
                 age    int(11)      NOT NULL,
+                active boolean      DEFAULT FALSE NOT NULL,
                 PRIMARY KEY (id)
             )
             ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
@@ -92,19 +95,17 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
     {
         $this->_createTestTables();
 
-        foreach($this->users_tbl_data as $u)
-        {
-            $this->DB->query("
+        foreach($this->testUsers as $u) {
+            $this->DB->query("                
                 INSERT INTO ?_user
                 VALUES (?a)",
-
                 array_values($u)
             );
         }
 
         $this->assertEquals(
             $this->DB->select("SELECT * FROM ?_user"),
-            $this->users_tbl_data
+            $this->testUsers
         );
     }
 }
