@@ -294,6 +294,7 @@ abstract class DB_Adapter_Generic_DB
      * Returns various statistical information.
      * @return array
      */
+    public
     function getStatistics ()
     {
         return $this->_statistics;

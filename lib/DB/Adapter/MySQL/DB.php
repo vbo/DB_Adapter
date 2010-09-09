@@ -117,6 +117,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
     protected
     function _performNewBlob ($blobid=null)
     {
+        require_once 'DB/Adapter/MySQL/Blob.php';
         return new DB_Adapter_Mysql_Blob($this, $blobid);
     }
 
