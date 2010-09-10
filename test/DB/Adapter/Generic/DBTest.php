@@ -58,7 +58,7 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
     private function _connect ()
     {
         $this->DB = DB_Adapter_Factory::connect(
-            'mysql://insourceru_dev:vb31337@localhost/insourceru_dev?charset=utf8&ident_prefix=test_'
+            TestConfig::$dsn['mysql']
         );
     }
 

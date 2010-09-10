@@ -1,43 +1,19 @@
 #!/usr/bin/env php
 <?php
-/* PHPUnit
- *
- * Copyright (c) 2002-2010, Sebastian Bergmann <sb@sebastian-bergmann.de>.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   * Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in
- *     the documentation and/or other materials provided with the
- *     distribution.
- *
- *   * Neither the name of Sebastian Bergmann nor the names of his
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRIC
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+/**
+ * If you want to run tests, you must install PHPUnit library (http://www.phpunit.de/)
+ * in the lib directory.
+ * Then you must copy db-credentials-example.ini to db-credentials.ini and correct DSNs.
+ * Then you may execute something like:
+ * $ test/run test/DB/Adapter/Generic/DBTest.php
  */
+
 error_reporting(E_ALL);
 ini_set('display_errors','On');
 ini_set('include_path', '.');
 
+require_once 'TestConfig.php';
+TestConfig::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
 require_once dirname(__FILE__) . '/../lib/config.php';
 
 if (extension_loaded('xdebug')) {
