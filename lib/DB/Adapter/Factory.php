@@ -94,7 +94,7 @@ class DB_Adapter_Factory
     private static
     function _determineDriverClassName ($dbtype)
     {
-        $dbtype = str_replace('sql', 'SQL', ucfirst($dbtype));
+        $dbtype = ucfirst($dbtype);
         $class  = "DB_Adapter_{$dbtype}_DB";
         return $class;
     }

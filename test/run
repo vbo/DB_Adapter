@@ -10,19 +10,15 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors','On');
-ini_set('include_path', '.');
+set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
+set_include_path(dirname(dirname(__FILE__)) . PATH_SEPARATOR . get_include_path());
 
 require_once 'TestConfig.php';
-TestConfig::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
 require_once dirname(__FILE__) . '/../lib/config.php';
-
-if (extension_loaded('xdebug')) {
-    ini_set('xdebug.show_exception_trace', 0);
-}
-
 require_once 'PHPUnit/Util/Filter.php';
-PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
-
 require 'PHPUnit/TextUI/Command.php';
+
+TestConfig::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
+PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
 PHPUnit_TextUI_Command::main();

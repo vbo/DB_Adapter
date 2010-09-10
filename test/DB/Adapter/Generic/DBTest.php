@@ -2,7 +2,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'DB/Adapter/Factory.php';
 
-class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
+abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
 {
     public $DB;
     public $testUsers = array(
@@ -22,18 +22,20 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
         ),
     );
 
+    protected $dbtype;
+
     public function setUp ()
     {
         $this->_connect();
         $this->_createTestTables();
     }
 
-    function testConnectionSucceeded ()
+    public function testConnectionSucceeded ()
     {
         $this->assertNotNull($this->DB);
     }
 
-    function testConnectionFailed ()
+    public function testConnectionFailed ()
     {
         $this->setExpectedException('DB_Adapter_Exception_ConnectionError');
         $failed = DB_Adapter_Factory::connect('mysql://not_existed:test@localhost/test?charset=utf8');
@@ -55,14 +57,14 @@ class DB_Adapter_GenericTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($b instanceof DB_Adapter_Generic_Blob);
     }
 
-    private function _connect ()
+    protected function _connect ()
     {
         $this->DB = DB_Adapter_Factory::connect(
-            TestConfig::$dsn['mysql']
+            TestConfig::$dsn[$this->dbtype]
         );
     }
 
-    private function _createTestTables ()
+    protected function _createTestTables ()
     {
         @$this->DB->query("DROP TABLE test_user");
         @$this->DB->query("DROP TABLE test_tree");
