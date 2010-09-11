@@ -58,11 +58,11 @@
                 <div class="menu">
                     <div class="yandexform" onclick="return {type: 3, logo: 'rb', arrow: false, webopt: false, websearch: false, bg: '#FFA000', fg: '#000000', fontsize: 14, suggest: true, site_suggest: true, encoding: 'utf-8'}"><form action="http://yandex.ru/sitesearch" method="get"><input type="hidden" name="searchid" value="158888"/><input name="text"/><input type="submit" value="Найти"/></form></div><script type="text/javascript" src="http://site.yandex.net/load/form/1/form.js" charset="utf-8"></script>
 
-                    <a href="http://sf.net/projects/dbadapter/">Проект на sf.net</a>
+                    <a href="http://github.com/vbo/DB_Adapter">Проект на github</a>
                     <!--a href="/tests/">Тесты</a-->
                     <a href="/dev/">Разработчикам</a>
                     <a href="/docs/">Документация</a>
-                    <a href="http://sourceforge.net/projects/dbadapter/files/">Скачать</a>
+                    <a href="http://github.com/vbo/DB_Adapter/downloads">Скачать</a>
                 </div>
 
 
@@ -111,11 +111,11 @@
 
                 <div id="footer">
                     <div id="partners">
-                        <a href="http://sf.net/projects/dbadapter/"><img src="http://db-adapter.in-source.ru/public/images/sourceforge-logo.png" alt="SourceForge.net" /></a>    
+                        <a href="http://github.com/vbo/DB_Adapter"><img style="width: 120px;" src="http://db-adapter.in-source.ru/public/images/github_logo.png" alt="github" /></a>
                     </div>
                     <ul>
                         <li><a href="http://db-adapter.in-source.ru/">Официальный сайт DB_Adapter</a></li>
-                        <li><a href="http://sf.net/projects/dbadapter/">Проект на sourceforge.net</a></li>
+                        <li><a href="http://github.com/vbo/DB_Adapter">Проект на github</a></li>
                         <li><a href="http://www.gnu.org/licenses/lgpl-3.0.txt">Лицензия GNU LGPL</a></li>
                         <li>(c) 2010</li>
                     </ul>

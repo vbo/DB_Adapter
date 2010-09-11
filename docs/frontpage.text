@@ -1,7 +1,7 @@
 DB_Adapter &mdash; единый элегантный PHP-интерфейс для различных СУБД
 =====================================================================
 
-<a href="http://sourceforge.net/projects/dbadapter/files/" id="download_button">DB_Adapter поставляется в исходных текстах
+<a href="http://github.com/downloads/vbo/DB_Adapter/DB_Adapter__10.09.zip" id="download_button">DB_Adapter поставляется в исходных текстах
 и вместе с&nbsp;документацией. Вы можете свободно использовать библиотеку для&nbsp;любых целей (лицензия GNU LGPL)</a>
 
 `DB_Adapter` &mdash; это небольшая PHP-библиотека для удобной работы с различными SQL-based СУБД.
@@ -44,5 +44,5 @@ foreach ($users as $login=>$mail) {
 [DbSimple]:      http://dklab.ru/lib/DbSimple/
 [vb]:            mailto:vb@in-source.ru
 [dev]:           http://db-adapter.in-source.ru/dev/
-[download]:      http://sourceforge.net/projects/dbadapter/files/
+[download]:      http://github.com/downloads/vbo/DB_Adapter/DB_Adapter__10.09.zip
 [devstat]:       /development_status/

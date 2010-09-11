@@ -75,7 +75,7 @@ h1.top_header a.m
 { margin-top: 120px; padding: 20px; padding-bottom: 30px; font-size: 12px; position: relative; }
 
 #footer ul
-{ padding-left: 0; }
+{ padding-left: 0; margin-top: -10px; }
 
 #footer ul li
 { list-style-type: none; }
