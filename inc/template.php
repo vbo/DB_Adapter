@@ -62,7 +62,7 @@
                     <!--a href="/tests/">Тесты</a-->
                     <a href="/dev/">Разработчикам</a>
                     <a href="/docs/">Документация</a>
-                    <a href="http://github.com/vbo/DB_Adapter/downloads">Скачать</a>
+                    <a href="/download/">Скачать</a>
                 </div>
 
 

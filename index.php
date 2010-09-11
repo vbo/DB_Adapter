@@ -48,6 +48,18 @@ if ($request_uri[strlen($request_uri)-1] != '/') {
     die();
 }
 
+if ($request_uri == '/download/') {
+    $builds = glob(dirname(__FILE__) . '/build/*');
+    sort($builds);
+    $newest = array_pop($builds);
+    header("Content-type: application/zip");
+    header("Content-disposition: attachment; filename=" . basename($newest));
+    foreach (file($newest) as $l) {
+        echo $l;
+    }
+    die();
+}
+
 $request_uri  = substr($request_uri, 1, -1);
 $request_file = determine_request_file($request_uri);
 if (!file_exists($request_file)) {
