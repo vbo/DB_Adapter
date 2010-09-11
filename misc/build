@@ -6,6 +6,10 @@ $destDir = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m');
 
 mkdir($tmpDir);
 copyDir($sourceDir, $tmpDir, 0);
+chdir($tmpDir);
+system('zip -r ' . $destDir . '.zip .');
+chdir($sourceDir);
+system('rm -R ' . $tmpDir);
 
 function copyDir($source, $destination, $depth) {
     $buildDirs = array('lib', 'doc', 'test');
@@ -42,11 +46,3 @@ function copyDir($source, $destination, $depth) {
         }
 	}
 }
-
-chdir($tmpDir);
-system('zip -r ' . $destDir . '.zip .');
-chdir($sourceDir);
-system('rm -R ' . $tmpDir);
-
-
-
