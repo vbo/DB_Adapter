@@ -3,5 +3,5 @@ require_once dirname(__FILE__) . '/../Generic/DBTest.php';
 
 class DB_Adapter_Mysql_DBTest extends DB_Adapter_Generic_DBTest
 {
-    protected $dbtype = 'mysql';
+    protected $_dbtype = 'mysql';
 }

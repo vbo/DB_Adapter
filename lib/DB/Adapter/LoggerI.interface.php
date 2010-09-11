@@ -25,6 +25,5 @@
  */
 interface DB_Adapter_LoggerI
 {
-    public
-    function log ($mess);
+    public function log ($mess);
 }

@@ -16,7 +16,7 @@ set_include_path(dirname(dirname(__FILE__)) . PATH_SEPARATOR . get_include_path(
 require_once 'TestConfig.php';
 require_once dirname(__FILE__) . '/../lib/config.php';
 require_once 'PHPUnit/Util/Filter.php';
-require 'PHPUnit/TextUI/Command.php';
+require_once 'PHPUnit/TextUI/Command.php';
 
 TestConfig::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');

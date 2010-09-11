@@ -51,8 +51,7 @@ class DB_Adapter_Exception extends Exception
      */
     private $dbo;
 
-    public 
-    function __construct ($code, $primary_info, $message, $dbo)
+    public function __construct ($code, $primary_info, $message, $dbo)
     {
         parent::__construct($message, $code);
         $this->primary_info = $primary_info;
@@ -61,15 +60,13 @@ class DB_Adapter_Exception extends Exception
         $this->dbo          = $dbo;
     }
 
-    public
-    function __toString ()
+    public function __toString ()
     {
         $context = "unknown";
         require_once 'DB/Adapter/ErrorTracker.php';
         $c = DB_Adapter_ErrorTracker::findCaller($this->getTrace(), true);
 
-        if ($c)
-        {
+        if ($c) {
             $context  = (isset($c['file']) ? $c['file'] : '?');
             $context .= ' on line ' . (isset($c['line']) ? $c['line'] : '?');
         }

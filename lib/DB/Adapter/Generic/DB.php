@@ -554,7 +554,6 @@ abstract class DB_Adapter_Generic_DB
             // First process guaranteed non-native placeholders.
             switch ($type) {
                 case 'a': // Array
-
                     if (!$value) $this->_placeholderNoValueFound = true;
                     if (!is_array($value)) return 'DB_ADAPTER_ERROR_VALUE_NOT_ARRAY';
 
@@ -563,15 +562,11 @@ abstract class DB_Adapter_Generic_DB
                         if     ($v === null)     $v = 'NULL';
                         elseif (is_string($v))   $v = $this->escape($v);
                         elseif (is_bool($v))     $v = (int) $v;
-                        elseif (!is_numeric($v)) $v = 'DB_ADAPTER_ERROR_VALUE';
-                        
-                        if (!is_int($k))
-                        {                            
+                        elseif (!is_numeric($v)) $v = 'DB_ADAPTER_ERROR_VALUE';                        
+                        if (!is_int($k)) {
                             $k = $this->escape($k, $isIdent = true);
                             $parts[] = "$k=$v";
-                        } 
-                        else
-                        {
+                        } else {
                             $parts[] = $v;
                         }
                     }
@@ -579,15 +574,12 @@ abstract class DB_Adapter_Generic_DB
                     return join(', ', $parts);
                     break;
 
-                case "#": // Identifier                    
-
+                case "#": // Identifier
                     if (!is_array($value)) return $this->escape($value, $isIdent = true);
-
                     $parts = array();
                     foreach ($value as $table=>$identifier)
                     {
                         if (!is_string($identifier)) return 'DB_ADAPTER_ERROR_ARRAY_VALUE_NOT_STRING';
-                        
                         // Else we gonna construct simething like `field` or `tbl`.`field`
                         $parts[] = (!is_int($table) ? $this->escape($table, true) . '.' : '') . $this->escape($identifier, true);
                     }
@@ -596,7 +588,6 @@ abstract class DB_Adapter_Generic_DB
                     break;
                     
                 case 'n': // Key
-                    
                     return empty($value) ? 'NULL' : intval($value);
                     break;
             }
@@ -610,22 +601,18 @@ abstract class DB_Adapter_Generic_DB
 
             // In non-native mode arguments are quoted.
             if ($value === null) return 'NULL';
-
             switch ($type)
             {
                 case '':
-
                     if (!is_scalar($value)) return 'DB_ADAPTER_ERROR_VALUE_NOT_SCALAR';
                     else                    return $this->escape($value);
                     break;
 
                 case 'd':
-
                     return intval($value);
                     break;
 
                 case 'f':
-
                     return str_replace(',', '.', floatval($value));
                     break;
             }
@@ -635,8 +622,7 @@ abstract class DB_Adapter_Generic_DB
         }
 
         // Optional block
-        if (isset($m[1]) && strlen($block=$m[1]))
-        {
+        if (isset($m[1]) && strlen($block=$m[1])) {
             $prev  = @$this->_placeholderNoValueFound;
             $block = $this->_expandPlaceholdersFlow($block);
             $block = $this->_placeholderNoValueFound ? '' : ' ' . $block . ' ';
@@ -652,8 +638,7 @@ abstract class DB_Adapter_Generic_DB
     /**
      * Return microtime as float value.
      */
-    private static
-    function _microtime()
+    private static function _microtime()
     {
         $t = explode(" ", microtime());
         return $t[0] + $t[1];
@@ -663,13 +648,11 @@ abstract class DB_Adapter_Generic_DB
      * Convert SQL field-list to COUNT(...) clause
      * (e.g. 'DISTINCT a AS aa, b AS bb' -> 'COUNT(DISTINCT a, b)').
      */
-    protected static
-    function _fieldList2Count ($fields)
+    protected static function _fieldList2Count ($fields)
     {
         $m = null;
         
-        if (preg_match('/^\s* DISTINCT \s* (.*)/sx', $fields, $m))
-        {
+        if (preg_match('/^\s* DISTINCT \s* (.*)/sx', $fields, $m)) {
             $fields = $m[1];
             $fields = preg_replace('/\s+ AS \s+ .*? (?=,|$)/sx', '', $fields);
             return "COUNT(DISTINCT $fields)";
@@ -683,34 +666,25 @@ abstract class DB_Adapter_Generic_DB
      * @param  array $rows
      * @return array $result
      */
-    private static
-    function _transformResult ($rows)
+    private static function _transformResult ($rows)
     {
         // Process ARRAY_KEY feature.
-        if (is_array($rows) && $rows)
-        {
+        if (is_array($rows) && $rows) {
             // Find ARRAY_KEY* AND PARENT_KEY fields in field list.
             $pk = null;
             $ak = array();
-            foreach (current($rows) as $fieldName => $dummy)
-            {
-                if (0 == strncasecmp($fieldName, self::ARRAY_KEY_COL, strlen(self::ARRAY_KEY_COL)))
-                {
+            foreach (current($rows) as $fieldName => $dummy) {
+                if (0 == strncasecmp($fieldName, self::ARRAY_KEY_COL, strlen(self::ARRAY_KEY_COL))) {
                     $ak[] = $fieldName;
-                }
-                elseif (0 == strncasecmp($fieldName, self::PARENT_KEY_COL, strlen(self::PARENT_KEY_COL)))
-                {
+                } elseif (0 == strncasecmp($fieldName, self::PARENT_KEY_COL, strlen(self::PARENT_KEY_COL))) {
                     $pk = $fieldName;
                 }
             }
             
             natsort($ak);
-
-            if ($ak)
-            {
+            if ($ak) {
                 // Tree-based array? Fields: ARRAY_KEY, PARENT_KEY
                 if ($pk !== null) return self::_transformResultToForest($rows, $ak[0], $pk);
-                
                 // Key-based array? Fields: ARRAY_KEY.
                 return self::_transformResultToHash($rows, $ak);
             }
@@ -726,25 +700,18 @@ abstract class DB_Adapter_Generic_DB
      * @param  array $ak     List of ARRAY_KEY* field names.
      * @return array         Transformed array.
      */
-    private static
-    function _transformResultToHash($rows, $arrayKeys)
+    private static function _transformResultToHash($rows, $arrayKeys)
     {
         $result = array();
-        foreach ($rows as $row)
-        {            
+        foreach ($rows as $row) {
             $current =& $result;
-
             // Iterate over all of ARRAY_KEY* fields and build array dimensions.
-            foreach ($arrayKeys as $ak)
-            {
+            foreach ($arrayKeys as $ak) {
                 $key = $row[$ak];
                 unset($row[$ak]); // remove ARRAY_KEY* field from result row
-                if ($key !== null)
-                {
+                if ($key !== null) {
                     $current =& $current[$key];
-                } 
-                else
-                {
+                } else {
                     // IF ARRAY_KEY field === null, use array auto-indices.
                     // we use $tmp, because don't know the value of auto-index
                     $tmp       =  array();
@@ -768,15 +735,12 @@ abstract class DB_Adapter_Generic_DB
      * @param string $pidName   Name of PARENT_ID field.
      * @return array            Transformed array (tree).
      */
-    private static
-    function _transformResultToForest($rows, $idName, $pidName)
+    private static function _transformResultToForest($rows, $idName, $pidName)
     {
         $ids      = array();
         $children = array();
-
         // Collect who are children of whom.
-        foreach ($rows as $i=>$r)
-        {
+        foreach ($rows as $i=>$r) {
             $row =& $rows[$i];
             $id  =  $row[$idName];
             $pid =  $row[$pidName];
@@ -785,8 +749,7 @@ abstract class DB_Adapter_Generic_DB
             if ($id == $pid)  $pid = null;  // Strange tree implementation
 
             $children[$pid][$id] =& $row;
-            if (!isset($children[$id]))
-            {
+            if (!isset($children[$id])) {
                 $children[$id] = array();
             }
 
@@ -796,8 +759,7 @@ abstract class DB_Adapter_Generic_DB
 
         // Root elements are elements with non-found PIDs.
         $forest = array();
-        foreach ($rows as $i=>$r)
-        {
+        foreach ($rows as $i=>$r) {
             $row  =& $rows[$i];
             $id   =  $row[$idName];
             $pid  =  $row[$pidName];
@@ -817,18 +779,14 @@ abstract class DB_Adapter_Generic_DB
      * Used for selectCol(), when we need to transform (N+1)d resulting array
      * to Nd array (column).
      */
-    private static
-    function _shrinkLastArrayDimensionCallback (&$v)
+    private static function _shrinkLastArrayDimensionCallback (&$v)
     {
         if (!$v) return;
         reset($v);
 
-        if (!is_array($firstCell = current($v)))
-        {
+        if (!is_array($firstCell = current($v))) {
             $v = $firstCell;
-        } 
-        else
-        {
+        } else {
             array_walk(
                 $v,
                 array(__CLASS__, '_shrinkLastArrayDimensionCallback')
@@ -842,18 +800,15 @@ abstract class DB_Adapter_Generic_DB
      * @todo Fix it
      * @return void
      */
-    protected
-    function _logQuery ($query, $noTrace=false)
+    protected function _logQuery ($query, $noTrace=false)
     {
         if (!$this->_logger) return;
 
         $this->_expandPlaceholders($query, $useNative = false);
-
         $message = $query[0];
         $context = null;
 
-        if (!$noTrace)
-        {
+        if (!$noTrace) {
             require_once 'DB/Adapter/ErrorTracker.php';
             $context = DB_Adapter_ErrorTracker::findCaller($trace=null, $returnCaller=true);
         }
@@ -864,16 +819,14 @@ abstract class DB_Adapter_Generic_DB
     /**
      * Log information about performed query statistics.
      */
-    private
-    function _logQueryStat ($queryTime, $fetchTime, $firstFetchTime, $rows)
+    private function _logQueryStat ($queryTime, $fetchTime, $firstFetchTime, $rows)
     {
         // Always increment counters.
         $this->_statistics['time'] += $queryTime;
         $this->_statistics['count']++;
 
         // If no logger, economize CPU resources and actually log nothing.
-        if (!$this->_logger)
-        {
+        if (!$this->_logger) {
             return;
         }
 
@@ -882,8 +835,7 @@ abstract class DB_Adapter_Generic_DB
         $tailFetchTime  = round($fetchTime      * 1000) - $firstFetchTime;
 
         $log = "  -- ";
-        if ($firstFetchTime + $tailFetchTime)
-        {
+        if ($firstFetchTime + $tailFetchTime) {
             $log = sprintf(
                 "  -- %d ms = %d+%d". ($tailFetchTime? "+%d" : ""),
                 $dt,
@@ -891,45 +843,34 @@ abstract class DB_Adapter_Generic_DB
                 $firstFetchTime,
                 $tailFetchTime
             );
-        }
-        else
-        {
+        } else {
             $log = sprintf("  -- %d ms", $dt);
         }
 
         $log .= "; returned ";
-        if (!is_array($rows))
-        {
+        if (!is_array($rows)) {
             $log .= $this->escape($rows);
-        } 
-        else
-        {
+        } else {
             $detailed = null;
-            if (count($rows) == 1)
-            {
+            if (count($rows) == 1) {
                 $len = 0; $values = array();
-                foreach ($rows[0] as $k=>$v)
-                {
+                foreach ($rows[0] as $k=>$v) {
                     $len += strlen($v);
-                    if ($len > self::MAX_LOG_ROW_LEN)
-                    {
+                    if ($len > self::MAX_LOG_ROW_LEN) {
                         break;
                     }
 
                     $values[] = $v === null? 'NULL' : $this->escape($v);
                 }
 
-                if ($len <= self::MAX_LOG_ROW_LEN)
-                {
+                if ($len <= self::MAX_LOG_ROW_LEN) {
                     $detailed = "(" . preg_replace("/\r?\n/", "\\n", join(', ', $values)) . ")";
                 }
             }
 
-            if ($detailed)
-            {
+            if ($detailed) {
                 $log .= $detailed;
-            } else
-            {
+            } else {
                 $log .= count($rows). " row(s)";
             }
         }

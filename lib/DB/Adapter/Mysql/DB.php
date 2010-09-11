@@ -38,22 +38,18 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
      * Connect to MySQL.
      * @param array $config Parsed DSN
      */
-    public
-    function __construct (array $config)
+    public function __construct (array $config)
     {
         $this->config = $config;
         $this->link   = $this->_connect();
         $this->_selectDB();
-
         if (isset($config["charset"])) $this->query('SET NAMES ?', $config["charset"]);
     }
 
-    private
-    function _connect ()
+    private function _connect ()
     {
         $c = $this->config;
         if (!empty($c['port'])) $c['host'] .= ":{$c['port']}";
-
         $con = @mysql_connect(
             $c['host'],
             $c['user'],
@@ -61,8 +57,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
             true
         );
 
-        if (!$con)
-        {
+        if (!$con) {
             $this->_raiseConnectionError(
                 'mysql_connect',
                 array(
@@ -76,30 +71,21 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         return $con;
     }
 
-    private
-    function _selectDB ()
+    private function _selectDB ()
     {
         $dbname = preg_replace('{^/}s', '', $this->config['path']);
-        
-        $db_selected = @mysql_select_db(
-            $dbname,
-            $this->link
-        );
-
-        if (!$db_selected)
-        {
+        $db_selected = @mysql_select_db($dbname, $this->link);
+        if (!$db_selected) {
             return $this->_raiseConnectionError(
                 'mysql_select_db',
-                array($dbname,)
+                array($dbname)
             );
         }
     }
 
-    protected
-    function _performEscape ($s, $isIdent=false)
+    protected function _performEscape ($s, $isIdent=false)
     {
-        if (!$isIdent)
-        {
+        if (!$isIdent) {
             $s = mysql_real_escape_string($s, $this->link);
             return "'{$s}'";
         } 
@@ -108,32 +94,27 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         return "`{$s}`";
     }
 
-    protected
-    function _performTransaction ($parameters=null)
+    protected function _performTransaction ($parameters=null)
     {
         return $this->query('BEGIN');
     }
 
-    protected
-    function _performNewBlob ($blobid=null)
+    protected function _performNewBlob ($blobid=null)
     {
         require_once 'DB/Adapter/Mysql/Blob.php';
         return new DB_Adapter_Mysql_Blob($this, $blobid);
     }
 
-    protected
-    function _performGetBlobFieldNames ($result)
+    protected function _performGetBlobFieldNames ($result)
     {
         $blob_fields = array();
-        for ($i=mysql_num_fields($result)-1; $i>=0; $i--)
-        {
+        for ($i=mysql_num_fields($result)-1; $i>=0; $i--) {
             $its_blob = strpos(
                 mysql_field_type($result, $i), 
                 "BLOB"
             ) !== false;
 
-            if ($its_blob)
-            {
+            if ($its_blob) {
                 $blob_fields[] = mysql_field_name($result, $i);
             }
         }
@@ -141,68 +122,52 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         return $blob_fields;
     }
 
-    protected
-    function _performCommit ()
+    protected function _performCommit ()
     {
         return $this->query('COMMIT');
     }
 
-    protected
-    function _performRollback ()
+    protected function _performRollback ()
     {
         return $this->query('ROLLBACK');
     }
 
-    protected
-    function _performTransformQuery (array& $queryMain, $how)
+    protected function _performTransformQuery (array& $queryMain, $how)
     {
-        switch ($how)
-        {
+        switch ($how) {
             // Prepare total calculation (if possible)
             case 'CALC_TOTAL':
-            {
                 $m = null;
-                if (preg_match('/^(\s* SELECT)(.*)/six', $queryMain[0], $m))
-                {
+                if (preg_match('/^(\s* SELECT)(.*)/six', $queryMain[0], $m)) {
                     $queryMain[0] = $m[1] . ' SQL_CALC_FOUND_ROWS' . $m[2];
                 }
 
                 break;
-            }
 
             // Perform total calculation.
             case 'GET_TOTAL':
-            {
                 $queryMain = array('SELECT FOUND_ROWS()');
                 break;
-            }
 
             default:
-            {
                 return false;
                 break;
-            }
         }
-
         return true;
     }
 
-    protected
-    function _performQuery (array $queryMain)
+    protected function _performQuery (array $queryMain)
     {
         $this->_lastQuery = $queryMain;
         $this->_expandPlaceholders($queryMain, false);
         $result = @mysql_query($queryMain[0], $this->link);
 
         if ($result === false) return $this->_raiseQueryError();
-        if (!is_resource($result))
-        {
+        if (!is_resource($result)) {
             // INSERT queries return generated ID.
-            if (preg_match('/^\s* INSERT \s+/six', $queryMain[0]))
-            {
+            if (preg_match('/^\s* INSERT \s+/six', $queryMain[0])) {
                 return @mysql_insert_id($this->link);
             }
-            
             // Non-SELECT queries return number of affected rows, SELECT - resource.
             return @mysql_affected_rows($this->link);
         }
@@ -210,18 +175,15 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         return $result;
     }
 
-    protected
-    function _performFetch ($result)
+    protected function _performFetch ($result)
     {
         $row = @mysql_fetch_assoc($result);
-        
         if (mysql_error())  return $this->_raiseQueryError();
         if ($row === false) return null;
         return $row;
     }
     
-    protected
-    function _performGetPlaceholderIgnoreRe ()
+    protected function _performGetPlaceholderIgnoreRe ()
     {
         return '
             "   (?> [^"\\\\]+|\\\\"|\\\\)*    "   |
@@ -231,11 +193,9 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         ';
     }
 
-    private
-    function _raiseQueryError ()
+    private function _raiseQueryError ()
     {
         if (!error_reporting()) return;
-        
         require_once 'DB/Adapter/Exception/QueryError.php';
         throw new DB_Adapter_Exception_QueryError(
             mysql_errno($this->link),
@@ -245,19 +205,14 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         );
     }
 
-    private
-    function _raiseConnectionError ($func, $conn_params)
+    private function _raiseConnectionError ($func, $conn_params)
     {
         if (!error_reporting()) return;
-
         $errno = $this->link ? mysql_errno($this->link) : mysql_errno();
         $error = $this->link ? mysql_error($this->link) : mysql_error();
-        
         $str_params   = join("', '", $conn_params);
         $primary_info = "{$func} ('{$str_params}')";
-
         require_once 'DB/Adapter/Exception/ConnectionError.php';
-        throw new DB_Adapter_Exception_ConnectionError($errno, $primary_info,
-                                                       $error, $this);
+        throw new DB_Adapter_Exception_ConnectionError($errno, $primary_info, $error, $this);
     }
 };

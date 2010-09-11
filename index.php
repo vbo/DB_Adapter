@@ -43,15 +43,13 @@ $request_uri = array_shift(
 if ($request_uri == '/') $request_uri = '/frontpage/';
 
 // URI must be trailed by slash
-if ($request_uri[strlen($request_uri)-1] != '/')
-{
+if ($request_uri[strlen($request_uri)-1] != '/') {
     header("Location: {$request_uri}/");
     die();
 }
 
 $request_uri  = substr($request_uri, 1, -1);
 $request_file = determine_request_file($request_uri);
-
 if (!file_exists($request_file)) {
     header('HTTP/1.1 404 Not Found');
     include('404.php');
@@ -62,26 +60,21 @@ $fcontents   = file($request_file);
 $page_header = trim(@$fcontents[0]);
 $fcontents   = join('', $fcontents);
 
-if (@$_GET['view'] == 'text')
-{
+if (@$_GET['view'] == 'text') {
     header('Content-type: text/plain');
     echo $fcontents;
-}
-else
-{
+} else {
     $breadcrumbs = create_breadcrumbs($request_uri, $page_header);
     $title       = create_title($breadcrumbs, $page_header);
 
-    render(
-        array(
-            'title'       => $title,
-            'content'     => Markdown($fcontents),
-            'breadcrumbs' => $breadcrumbs,
-            'links'       => array(
-                'view_source' => "{$_SERVER['REQUEST_URI']}?view=text",
-            ),
-        )
-    );
+    render(array(
+        'title'       => $title,
+        'content'     => Markdown($fcontents),
+        'breadcrumbs' => $breadcrumbs,
+        'links'       => array(
+            'view_source' => "{$_SERVER['REQUEST_URI']}?view=text",
+        ),
+    ));
 }
 
 
@@ -104,8 +97,7 @@ function create_breadcrumbs ($request_uri, $title)
     $arr_request_uri = explode('/', $request_uri);
     array_pop($arr_request_uri);
 
-    while(!empty($arr_request_uri))
-    {
+    while(!empty($arr_request_uri)) {
         $bc = array();
         $ru = '/'.join('/', $arr_request_uri);
         $f  = determine_request_file($ru);
@@ -121,8 +113,7 @@ function create_breadcrumbs ($request_uri, $title)
         array_unshift($breadcrumbs, $bc);
     }
 
-    if ($request_uri != 'frontpage')
-    {
+    if ($request_uri != 'frontpage') {
         $breadcrumbs[] = array(
             'uri'   => "/{$request_uri}/",
             'title' => $title,

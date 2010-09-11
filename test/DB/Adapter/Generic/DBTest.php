@@ -4,8 +4,8 @@ require_once 'DB/Adapter/Factory.php';
 
 abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
 {
-    public $DB;
-    public $testUsers = array(
+    protected $_DB;
+    protected $_testUsers = array(
         array(
             'id'    => 1,
             'login' => 'vb',
@@ -22,7 +22,7 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
         ),
     );
 
-    protected $dbtype;
+    protected $_dbtype;
 
     public function setUp ()
     {
@@ -32,7 +32,7 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
 
     public function testConnectionSucceeded ()
     {
-        $this->assertNotNull($this->DB);
+        $this->assertNotNull($this->_DB);
     }
 
     public function testConnectionFailed ()
@@ -43,33 +43,62 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
 
     public function testGetLastQuery()
     {
-        $this->DB->query('SELECT * FROM test_user');
-        $this->assertEquals('SELECT * FROM test_user', $this->DB->getLastQuery());
+        $this->_DB->query('SELECT * FROM test_user');
+        $this->assertEquals('SELECT * FROM test_user', $this->_DB->getLastQuery());
 
-        @$this->DB->query('BAD QUERY');
-        $this->assertEquals('BAD QUERY', $this->DB->getLastQuery());
+        @$this->_DB->query('BAD QUERY');
+        $this->assertEquals('BAD QUERY', $this->_DB->getLastQuery());
     }
 
     public function testBlob()
     {
-        $b = $this->DB->blob();
+        $b = $this->_DB->blob();
         $this->assertTrue(!is_null($b));
         $this->assertTrue($b instanceof DB_Adapter_Generic_Blob);
+    }
+    
+    public function testIdentPrefixCorrect ()
+    {
+        $this->assertEquals($this->_DB->setIdentPrefix(), 'test_');
+    }
+
+    public function testIdentPrefixPH ()
+    {
+        @$this->_DB->select("SELECT * FROM ?_user");
+        $this->assertEquals($this->_DB->getLastQuery(), "SELECT * FROM test_user");
+    }
+
+    public function testListPH ()
+    {
+        $this->_createTestTables();
+
+        foreach($this->_testUsers as $u) {
+            $this->_DB->query("
+                INSERT INTO ?_user
+                VALUES (?a)",
+                array_values($u)
+            );
+        }
+
+        $this->assertEquals(
+            $this->_DB->select("SELECT * FROM ?_user"),
+            $this->_testUsers
+        );
     }
 
     protected function _connect ()
     {
-        $this->DB = DB_Adapter_Factory::connect(
-            TestConfig::$dsn[$this->dbtype]
+        $this->_DB = DB_Adapter_Factory::connect(
+            TestConfig::$dsn[$this->_dbtype]
         );
     }
 
     protected function _createTestTables ()
     {
-        @$this->DB->query("DROP TABLE test_user");
-        @$this->DB->query("DROP TABLE test_tree");
+        @$this->_DB->query("DROP TABLE test_user");
+        @$this->_DB->query("DROP TABLE test_tree");
 
-        $this->DB->query("
+        $this->_DB->query("
             CREATE TABLE test_user (
                 id     int(11)      NOT NULL  auto_increment,
                 login  varchar(100) NOT NULL,
@@ -79,35 +108,6 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
                 PRIMARY KEY (id)
             )
             ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
-        );
-    }    
-
-    function testIdentPrefixCorrect ()
-    {
-        $this->assertEquals($this->DB->setIdentPrefix(), 'test_');
-    }
-
-    function testIdentPrefixPH ()
-    {
-        @$this->DB->select("SELECT * FROM ?_user");
-        $this->assertEquals($this->DB->getLastQuery(), "SELECT * FROM test_user");
-    }
-
-    function testListPH ()
-    {
-        $this->_createTestTables();
-
-        foreach($this->testUsers as $u) {
-            $this->DB->query("                
-                INSERT INTO ?_user
-                VALUES (?a)",
-                array_values($u)
-            );
-        }
-
-        $this->assertEquals(
-            $this->DB->select("SELECT * FROM ?_user"),
-            $this->testUsers
         );
     }
 }

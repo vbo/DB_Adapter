@@ -30,27 +30,23 @@ abstract class DB_Adapter_Generic_Blob
      * Returns following $length bytes from the blob.
      * @return string
      */
-    abstract
-    function read ($len);
+    abstract function read ($len);
 
     /**
      * Appends data to blob.
      * @return string
      */
-    abstract
-    function write ($data);
+    abstract function write ($data);
 
     /**
      * Returns length of the blob.
      * @return int
      */
-    abstract
-    function length();
+    abstract function length();
 
     /**
      * Closes the blob. Return its ID. No other way to obtain this ID!
      * @return int $blobid
      */
-    abstract
-    function close();
+    abstract function close();
 }

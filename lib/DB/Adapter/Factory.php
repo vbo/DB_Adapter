@@ -38,8 +38,7 @@ class DB_Adapter_Factory
      * @param   string                 $dsn
      * @return  DB_Adapter_Generic_DB  $object
      */
-    public static
-    function connect ($dsn)
+    public static function connect ($dsn)
     {
         $config = self::parseDSN($dsn);
         if (!$config) return;
@@ -59,16 +58,12 @@ class DB_Adapter_Factory
      *
      * @todo Throw an Exception if not parsed
      */
-    public static
-    function parseDSN ($dsn)
+    public static function parseDSN ($dsn)
     {
         if (is_array($dsn)) return $dsn;
-
         $parsed = @parse_url($dsn);
         if (!$parsed) return null;
-
-        if (!empty($parsed['query']))
-        {
+        if (!empty($parsed['query'])) {
             $params = null;
             parse_str($parsed['query'], $params);
             $parsed += $params;
@@ -78,12 +73,10 @@ class DB_Adapter_Factory
         return $parsed;
     }
 
-    private static
-    function _loadDriver (array $config)
+    private static function _loadDriver (array $config)
     {
         $classname = self::_determineDriverClassName($config['scheme']);
-        if (!class_exists($classname))
-        {
+        if (!class_exists($classname)) {
             $path = str_replace('_', '/', $classname) . ".php";
             require_once $path;
         }
@@ -91,8 +84,7 @@ class DB_Adapter_Factory
         return new $classname($config);
     }
 
-    private static
-    function _determineDriverClassName ($dbtype)
+    private static function _determineDriverClassName ($dbtype)
     {
         $dbtype = ucfirst($dbtype);
         $class  = "DB_Adapter_{$dbtype}_DB";

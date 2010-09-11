@@ -1,5 +1,5 @@
 <?php
 abstract class TestConfig
 {
-    static $dsn;
+    public static $dsn;
 }
