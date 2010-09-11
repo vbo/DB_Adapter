@@ -1,0 +1,59 @@
+select()
+============
+
+<pre><code>mixed DB_Adapter_Generic_DB::<a href="/docs/api/select/">select</a>(string $query [, $arg1 [, $arg2 ... ]])
+</code></pre>
+
+Метод `select` является самым простым и универсальным методом библиотеки.
+Он позволяет делать выборку всего результата и представлять его в виде списка ассоциативных массивов.
+
+    $users = $DB->select("
+        SELECT * FROM ?_users
+        LIMIT 10"
+    );
+
+    foreach($users as $user) {
+        echo $user['id'] . ' - ' . $user['login'];
+        echo '<br />';
+    }
+
+
+По умолчанию, список индексируется последовательностью целых чисел, начинающейся с нуля.
+Для отдельных запросов это поведение можно изменить при помощи [Специальных имён полей](/docs/special_names).
+
+Для примера, выберем пользователей в список, индексированный по их id в базе данных.
+
+    $users = $DB->select("
+        SELECT *, id AS ARRAY_KEY
+        FROM ?_users
+        LIMIT 10"
+    );
+
+    foreach($users as $id=>$user) {
+        echo $id . ' - ' . $user['login'];
+        echo '<br />';
+    }
+
+
+В некоторых случаев мы можем использовать и более сложные структуры данных:
+
+    $attractions = $DB->select("
+        SELECT *,
+        country_id AS ARRAY_KEY_1,
+        id AS ARRAY_KEY_2
+        FROM ?_attractions"
+    );
+
+    foreach($attractions as $c_id=>$c_places) {
+        echo '<h2>' . getCountryName($c_id) . '</h2>';
+
+        foreach($c_places as $id=>$place) {
+            echo '<h3>' . $place['name'] . '</h3>';
+            echo '<p>' . $place['description'] . '</p>';
+            echo '<br />';
+        }
+    }
+
+
+
+

@@ -89,7 +89,7 @@ else
 
 function determine_request_file ($uri)
 {
-    return "documents/{$uri}.text";
+    return "docs/{$uri}.text";
 }
 
 function render ($__vars)
