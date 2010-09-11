@@ -1,0 +1,52 @@
+#!/usr/bin/env php
+<?php
+$sourceDir = dirname(dirname(__FILE__));
+$tmpDir  = dirname($sourceDir) . '/tmp/';
+$destDir = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m');
+
+mkdir($tmpDir);
+copyDir($sourceDir, $tmpDir, 0);
+
+function copyDir($source, $destination, $depth) {
+    $buildDirs = array('lib', 'doc', 'test');
+    $foreignLibs = array('PHPUnit', 'markdown');
+    $specialFiles = array('db-credentials.ini');
+    $depth++;
+    if (is_dir($source)) {
+        @mkdir($destination);
+		$directory = dir($source);
+		while (FALSE !== ($readdirectory = $directory->read())) {
+			if ($readdirectory == '.' || $readdirectory == '..' ) {
+				continue;
+			}
+            if ($depth == 1 && !in_array($readdirectory, $buildDirs)) {
+                continue;
+            }
+            if ($depth == 2 && in_array($readdirectory, $foreignLibs)) {
+                continue;
+            }
+			$PathDir = $source . '/' . $readdirectory;
+			if (is_dir($PathDir)) {
+				copyDir($PathDir, $destination . '/' . $readdirectory, $depth);
+				continue;
+			}
+            if (!in_array(basename($PathDir), $specialFiles)) {
+                copy($PathDir, $destination . '/' . $readdirectory);
+            }
+		}
+
+		$directory->close();
+	}else {
+        if (!in_array(basename($PathDir), $specialFiles)) {
+            copy($source, $destination);
+        }
+	}
+}
+
+chdir($tmpDir);
+system('zip -r ' . $destDir . '.zip .');
+chdir($sourceDir);
+system('rm -R ' . $tmpDir);
+
+
+

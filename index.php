@@ -82,7 +82,7 @@ if (@$_GET['view'] == 'text') {
 
 function determine_request_file ($uri)
 {
-    return "docs/{$uri}.text";
+    return "doc/{$uri}.text";
 }
 
 function render ($__vars)
