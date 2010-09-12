@@ -8,6 +8,12 @@ a
 a:hover, a.this
 { color: #f15a27; }
 
+a.action
+{ text-decoration: none !important; border-bottom: 1px #0071bb dashed; }
+
+a.action:hover
+{ border-bottom: 1px #f15a27 dashed; }
+
 #wrap
 { background-image: url("images/bg.jpg"); background-position: top left; background-repeat: repeat-x; }
 
