@@ -2,19 +2,20 @@
 <?php
 $sourceDir = dirname(dirname(__FILE__));
 $tmpDir  = dirname($sourceDir) . '/tmp/';
-$destDir = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m');
+$destFile = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m') . '.zip';
 
-mkdir($tmpDir);
-copyDir($sourceDir, $tmpDir, 0);
+copySourceDir($sourceDir, $tmpDir, 0);
 chdir($tmpDir);
-system('zip -r ' . $destDir . '.zip .');
+system('rm ' . $destFile);
+system('zip -r ' . $destFile . ' .');
 chdir($sourceDir);
 system('rm -R ' . $tmpDir);
 
-function copyDir($source, $destination, $depth) {
-    $buildDirs = array('lib', 'doc', 'test');
-    $foreignLibs = array('PHPUnit', 'markdown');
-    $specialFiles = array('db-credentials.ini');
+function copySourceDir($source, $destination, $depth) {
+    static $buildDirs    = array('lib', 'doc', 'test');
+    static $foreignLibs  = array('PHPUnit', 'markdown');
+    static $specialFiles = array('db-credentials.ini', 'index.php', '.htaccess', '404.php');
+    
     $depth++;
     if (is_dir($source)) {
         @mkdir($destination);
@@ -23,21 +24,22 @@ function copyDir($source, $destination, $depth) {
 			if ($readdirectory == '.' || $readdirectory == '..' ) {
 				continue;
 			}
-            if ($depth == 1 && !in_array($readdirectory, $buildDirs)) {
-                continue;
-            }
-            if ($depth == 2 && in_array($readdirectory, $foreignLibs)) {
-                continue;
-            }
+            
 			$PathDir = $source . '/' . $readdirectory;
 			if (is_dir($PathDir)) {
-				copyDir($PathDir, $destination . '/' . $readdirectory, $depth);
+                if ($depth == 1 && !in_array($readdirectory, $buildDirs)) {
+                    continue;
+                }
+                if ($depth == 2 && in_array($readdirectory, $foreignLibs)) {
+                    continue;
+                }
+				copySourceDir($PathDir, $destination . '/' . $readdirectory, $depth);
 				continue;
 			}
             if (!in_array(basename($PathDir), $specialFiles)) {
                 copy($PathDir, $destination . '/' . $readdirectory);
             }
-		}
+		}        
 
 		$directory->close();
 	}else {
