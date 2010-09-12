@@ -2,7 +2,7 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'DB/Adapter/Factory.php';
 
-abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
+abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
 {
     protected $_DB;
     protected $_testUsers = array(
@@ -118,7 +118,7 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
      */
     public function testConditionalPH($active, $query)
     {
-        $this->_DB->select("            
+        $this->_DB->select("
             SELECT * FROM ?_user
           { WHERE active = ?d }",
             is_null($active) ? DB_ADAPTER_SKIP : $active

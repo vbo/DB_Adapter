@@ -2,6 +2,10 @@
 require_once 'PHPUnit/Framework.php';
 require_once 'DB/Adapter/Factory.php';
 
+/**
+ * @group Generic
+ * @group All
+ */
 class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
 {
     /**
