@@ -24,7 +24,6 @@
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 0.1 beta
  *
- * @todo Correct DNS parse algorithm. Now it not supports "@" character in password
  * @todo Make DB_Adapter_DSN class and rewrite connectors
  */
 class DB_Adapter_Factory
