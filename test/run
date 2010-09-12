@@ -5,7 +5,11 @@
  * in the lib directory.
  * Then you must copy db-credentials-example.ini to db-credentials.ini and correct DSNs.
  * Then you may execute something like:
- * $ test/run test/DB/Adapter/Generic/DBTest.php
+ * $ test/run Generic
+ * $ test/run Generic,Mysql
+ * $ test/run All
+ *
+ * Where Generic, Mysql etc - is the groupname of the testcases.
  */
 
 error_reporting(E_ALL);
