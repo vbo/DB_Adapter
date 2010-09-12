@@ -41,6 +41,9 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
         $failed = DB_Adapter_Factory::connect('mysql://not_existed:test@localhost/test?charset=utf8');
     }
 
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testGetLastQuery()
     {
         $this->_DB->query('SELECT * FROM test_user');
@@ -50,24 +53,36 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('BAD QUERY', $this->_DB->getLastQuery());
     }
 
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testBlob()
     {
         $b = $this->_DB->blob();
         $this->assertTrue(!is_null($b));
         $this->assertTrue($b instanceof DB_Adapter_Generic_Blob);
     }
-    
+
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testIdentPrefixCorrect ()
     {
         $this->assertEquals($this->_DB->setIdentPrefix(), 'test_');
     }
 
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testIdentPrefixPH ()
     {
         @$this->_DB->select("SELECT * FROM ?_user");
         $this->assertEquals($this->_DB->getLastQuery(), "SELECT * FROM test_user");
     }
 
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testListPH ()
     {
         $this->_createTestTables();
