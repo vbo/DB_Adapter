@@ -79,12 +79,16 @@ abstract class DB_Adapter_Generic_DB
      * Returns last user query text (for debug porposes)
      * @return string
      */
-    public function getLastQuery ()
+    public function getLastQuery ($inline=false)
     {
         $q = $this->_lastQuery;
         if (is_array($q)) {
             $this->_expandPlaceholders($q);
             $q = $q[0];
+        }
+
+        if ($inline) {
+            $q = preg_replace('{(\s{2,})}', ' ', trim($q));
         }
 
         return $q;

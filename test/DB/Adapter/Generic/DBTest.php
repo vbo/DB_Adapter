@@ -56,6 +56,15 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConnectionSucceeded
      */
+    public function testGetLastQueryInline()
+    {
+        $this->_DB->query("\t\t\t SELECT * \n FROM                  test_user");
+        $this->assertEquals('SELECT * FROM test_user', $this->_DB->getLastQuery($inline = true));
+    }
+
+    /**
+     * @depends testConnectionSucceeded
+     */
     public function testBlob()
     {
         $b = $this->_DB->blob();
@@ -82,6 +91,7 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
 
     /**
      * @depends testConnectionSucceeded
+     * @depends testIdentPrefixPH
      */
     public function testListPH ()
     {
@@ -98,6 +108,30 @@ abstract class DB_Adapter_Generic_DBTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             $this->_DB->select("SELECT * FROM ?_user"),
             $this->_testUsers
+        );
+    }
+
+    /**
+     * @depends testConnectionSucceeded
+     * @depends testIdentPrefixPH
+     * @dataProvider conditionsProvider
+     */
+    public function testConditionalPH($active, $query)
+    {
+        $this->_DB->select("            
+            SELECT * FROM ?_user
+          { WHERE active = ?d }",
+            is_null($active) ? DB_ADAPTER_SKIP : $active
+        );
+
+        $this->assertEquals($query, trim($this->_DB->getLastQuery($inline = true)));
+    }
+
+    public function conditionsProvider()
+    {
+        return array(
+            array(null, 'SELECT * FROM test_user'),
+            array(1, 'SELECT * FROM test_user WHERE active = 1'),
         );
     }
 
