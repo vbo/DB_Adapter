@@ -5,6 +5,7 @@ require_once 'DB/Adapter/Factory.php';
 abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
 {
     protected $_DB;
+    protected $_dbtype;
     protected $_testUsers = array(
         array(
             'id'    => 1,
@@ -21,8 +22,6 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
             'active'=> 1
         ),
     );
-
-    protected $_dbtype;
 
     public function setUp ()
     {
@@ -58,7 +57,7 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
      */
     public function testGetLastQueryInline()
     {
-        $this->_DB->query("\t\t\t SELECT * \n FROM                  test_user");
+        $this->_DB->query("\t\t\t SELECT * \n FROM  test_user");
         $this->assertEquals('SELECT * FROM test_user', $this->_DB->getLastQuery($inline = true));
     }
 
