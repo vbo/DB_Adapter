@@ -1,4 +1,5 @@
 <?php
+
 require_once 'DB/Adapter/AbstractTest.php';
 
 /**

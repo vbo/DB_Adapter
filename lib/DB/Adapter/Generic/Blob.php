@@ -24,19 +24,20 @@
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 0.1 beta
  */
+
 abstract class DB_Adapter_Generic_Blob
 {
     /**
      * Returns following $length bytes from the blob.
      * @return string
      */
-    abstract function read ($len);
+    abstract function read($len);
 
     /**
      * Appends data to blob.
      * @return string
      */
-    abstract function write ($data);
+    abstract function write($data);
 
     /**
      * Returns length of the blob.

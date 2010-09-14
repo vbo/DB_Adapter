@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DB_Adapter documentation browser
  *
@@ -26,7 +27,7 @@
  */
 
 error_reporting(E_ALL);
-ini_set('display_errors','On');
+ini_set('display_errors', 'On');
 require_once 'lib/config.php';
 
 (include_once 'markdown/markdown.php') or die('
@@ -37,13 +38,15 @@ require_once 'lib/config.php';
 );
 
 $request_uri = array_shift(
-    explode('?', $_SERVER['REQUEST_URI'])
+        explode('?', $_SERVER['REQUEST_URI'])
 );
 
-if ($request_uri == '/') $request_uri = '/frontpage/';
+if ($request_uri == '/') {
+    $request_uri = '/frontpage/';
+}
 
 // URI must be trailed by slash
-if ($request_uri[strlen($request_uri)-1] != '/') {
+if ($request_uri[strlen($request_uri) - 1] != '/') {
     header("Location: {$request_uri}/");
     die();
 }
@@ -60,7 +63,7 @@ if ($request_uri == '/download/') {
     die();
 }
 
-$request_uri  = substr($request_uri, 1, -1);
+$request_uri = substr($request_uri, 1, -1);
 $request_file = determine_request_file($request_uri);
 if (!file_exists($request_file)) {
     header('HTTP/1.1 404 Not Found');
@@ -68,22 +71,22 @@ if (!file_exists($request_file)) {
     die();
 }
 
-$fcontents   = file($request_file);
+$fcontents = file($request_file);
 $page_header = trim(@$fcontents[0]);
-$fcontents   = join('', $fcontents);
+$fcontents = join('', $fcontents);
 
 if (@$_GET['view'] == 'text') {
     header('Content-type: text/plain');
     echo $fcontents;
 } else {
     $breadcrumbs = create_breadcrumbs($request_uri, $page_header);
-    $title       = create_title($breadcrumbs, $page_header);
+    $title = create_title($breadcrumbs, $page_header);
 
     render(array(
-        'title'       => $title,
-        'content'     => Markdown($fcontents),
+        'title' => $title,
+        'content' => Markdown($fcontents),
         'breadcrumbs' => $breadcrumbs,
-        'links'       => array(
+        'links' => array(
             'view_source' => "{$_SERVER['REQUEST_URI']}?view=text",
         ),
     ));
@@ -92,42 +95,43 @@ if (@$_GET['view'] == 'text') {
 
 ######################################################
 
-function determine_request_file ($uri)
+function determine_request_file($uri)
 {
     return "doc/{$uri}.text";
 }
 
-function render ($__vars)
+function render($__vars)
 {
     extract($__vars);
     require 'inc/template.php';
 }
 
-function create_breadcrumbs ($request_uri, $title)
+function create_breadcrumbs($request_uri, $title)
 {
-    $breadcrumbs     = array();
+    $breadcrumbs = array();
     $arr_request_uri = explode('/', $request_uri);
     array_pop($arr_request_uri);
 
-    while(!empty($arr_request_uri)) {
+    while (!empty($arr_request_uri)) {
         $bc = array();
-        $ru = '/'.join('/', $arr_request_uri);
-        $f  = determine_request_file($ru);
+        $ru = '/' . join('/', $arr_request_uri);
+        $f = determine_request_file($ru);
         $fi = fopen($f, "r");
 
-        if (!$fi) break;
+        if (!$fi) {
+            break;
+        }
+        
         $stitle = trim(@fgets($fi));
-
-        $bc['uri']   = $ru . '/';
+        $bc['uri'] = $ru . '/';
         $bc['title'] = $stitle;
-
         array_pop($arr_request_uri);
         array_unshift($breadcrumbs, $bc);
     }
 
     if ($request_uri != 'frontpage') {
         $breadcrumbs[] = array(
-            'uri'   => "/{$request_uri}/",
+            'uri' => "/{$request_uri}/",
             'title' => $title,
         );
     }
@@ -135,9 +139,11 @@ function create_breadcrumbs ($request_uri, $title)
     return $breadcrumbs;
 }
 
-function create_title ($breadcrumbs, $page_header)
+function create_title($breadcrumbs, $page_header)
 {
     $t = empty($breadcrumbs) ? $page_header : 'DB_Adapter';
-    foreach ($breadcrumbs as $bc) $t .= " :: {$bc['title']}";
+    foreach ($breadcrumbs as $bc) {
+        $t .= " :: {$bc['title']}";
+    }
     return $t;
 }

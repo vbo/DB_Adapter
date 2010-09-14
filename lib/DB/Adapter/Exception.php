@@ -24,6 +24,7 @@
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 0.1 beta
  */
+
 class DB_Adapter_Exception extends Exception
 {
     /**
@@ -44,36 +45,36 @@ class DB_Adapter_Exception extends Exception
      * @var numeric
      */
     public $code;
-
+    
     /**
      * Database adapter instance
      * @var DB_Adapter_Generic_DB
      */
     private $dbo;
 
-    public function __construct ($code, $primary_info, $message, $dbo)
+    public function __construct($code, $primary_info, $message, $dbo)
     {
         parent::__construct($message, $code);
         $this->primary_info = $primary_info;
-        $this->message      = $message;
-        $this->code         = $code;
-        $this->dbo          = $dbo;
+        $this->message = $message;
+        $this->code = $code;
+        $this->dbo = $dbo;
     }
 
-    public function __toString ()
+    public function __toString()
     {
         $context = "unknown";
         require_once 'DB/Adapter/ErrorTracker.php';
         $c = DB_Adapter_ErrorTracker::findCaller($this->getTrace(), true);
 
         if ($c) {
-            $context  = (isset($c['file']) ? $c['file'] : '?');
+            $context = (isset($c['file']) ? $c['file'] : '?');
             $context .= ' on line ' . (isset($c['line']) ? $c['line'] : '?');
         }
 
-        $errmsg  = get_class($this) . ($context ? " in {$context}" : "");
-        $errmsg .= "\n" .  rtrim($this->message);
-        $errmsg .= "\n" .  "Error occurred in {$this->primary_info}";
+        $errmsg = get_class($this) . ($context ? " in {$context}" : "");
+        $errmsg .= "\n" . rtrim($this->message);
+        $errmsg .= "\n" . "Error occurred in {$this->primary_info}";
         return $errmsg;
     }
-};
+}

@@ -1,4 +1,5 @@
 <?php
+
 if (!defined('PATH_SEPARATOR')) {
     define('PATH_SEPARATOR', getenv('COMSPEC') ? ';' : ':');
 }

@@ -1,4 +1,5 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
 require_once 'DB/Adapter/Factory.php';
 
@@ -8,6 +9,7 @@ require_once 'DB/Adapter/Factory.php';
  */
 class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
 {
+
     /**
      * @dataProvider dsnProvider
      */
@@ -15,7 +17,7 @@ class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals($parsed, DB_Adapter_Factory::parseDSN($dsn));
     }
-    
+
     /**
      * @dataProvider dsnProviderBad
      */
@@ -37,7 +39,8 @@ class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
     public function dsnProvider()
     {
         return array(
-            array( // common dsn
+            // common dsn
+            array(
                 'dbtype://username:pass@dbhost/dbname?param=val',
                 array(
                     'scheme' => 'dbtype',
@@ -50,7 +53,8 @@ class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
                     'dsn' => 'dbtype://username:pass@dbhost/dbname?param=val',
                 )
             ),
-            array( // dsn with @ simbol in password
+            // dsn with @ simbol in password
+            array(
                 'dbtype://username:@pas@s@dbhost/dbname?param=val',
                 array(
                     'scheme' => 'dbtype',
@@ -63,7 +67,8 @@ class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
                     'dsn' => 'dbtype://username:@pas@s@dbhost/dbname?param=val',
                 )
             ),
-            array( // dsn with specified port
+            // dsn with specified port
+            array(
                 'dbtype://username:pass@dbhost:1234/dbname?param=val',
                 array(
                     'scheme' => 'dbtype',
@@ -77,9 +82,10 @@ class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
                     'dsn' => 'dbtype://username:pass@dbhost:1234/dbname?param=val',
                 )
             ),
-            array( // already parsed dsn
-                array('bla'=>'bla'),
-                array('bla'=>'bla')
+            // already parsed dsn
+            array(
+                array('bla' => 'bla'),
+                array('bla' => 'bla')
             )
         );
     }

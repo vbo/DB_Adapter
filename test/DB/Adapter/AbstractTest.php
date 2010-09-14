@@ -1,4 +1,5 @@
 <?php
+
 require_once 'PHPUnit/Framework.php';
 require_once 'DB/Adapter/Factory.php';
 
@@ -8,33 +9,33 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
     protected $_dbtype;
     protected $_testUsers = array(
         array(
-            'id'    => 1,
+            'id' => 1,
             'login' => 'vb',
-            'mail'  => 'vb@in-source.ru',
-            'age'   => 20,
-            'active'=> 0
+            'mail' => 'vb@in-source.ru',
+            'age' => 20,
+            'active' => 0
         ),
         array(
-            'id'    => 2,
+            'id' => 2,
             'login' => 'pavel',
-            'mail'  => 'example-pavel@gmail.com',
-            'age'   => 24,
-            'active'=> 1
+            'mail' => 'example-pavel@gmail.com',
+            'age' => 24,
+            'active' => 1
         ),
     );
 
-    public function setUp ()
+    public function setUp()
     {
         $this->_connect();
         $this->_createTestTables();
     }
 
-    public function testConnectionSucceeded ()
+    public function testConnectionSucceeded()
     {
         $this->assertNotNull($this->_DB);
     }
 
-    public function testConnectionFailed ()
+    public function testConnectionFailed()
     {
         $this->setExpectedException('DB_Adapter_Exception_ConnectionError');
         $failed = DB_Adapter_Factory::connect('mysql://not_existed:test@localhost/test?charset=utf8');
@@ -74,7 +75,7 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConnectionSucceeded
      */
-    public function testIdentPrefixCorrect ()
+    public function testIdentPrefixCorrect()
     {
         $this->assertEquals($this->_DB->setIdentPrefix(), 'test_');
     }
@@ -82,7 +83,7 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
     /**
      * @depends testConnectionSucceeded
      */
-    public function testIdentPrefixPH ()
+    public function testIdentPrefixPH()
     {
         @$this->_DB->select("SELECT * FROM ?_user");
         $this->assertEquals($this->_DB->getLastQuery(), "SELECT * FROM test_user");
@@ -92,11 +93,10 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
      * @depends testConnectionSucceeded
      * @depends testIdentPrefixPH
      */
-    public function testListPH ()
+    public function testListPH()
     {
         $this->_createTestTables();
-
-        foreach($this->_testUsers as $u) {
+        foreach ($this->_testUsers as $u) {
             $this->_DB->query("
                 INSERT INTO ?_user
                 VALUES (?a)",
@@ -134,14 +134,14 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    protected function _connect ()
+    protected function _connect()
     {
         $this->_DB = DB_Adapter_Factory::connect(
-            TestConfig::$dsn[$this->_dbtype]
+                TestConfig::$dsn[$this->_dbtype]
         );
     }
 
-    protected function _createTestTables ()
+    protected function _createTestTables()
     {
         @$this->_DB->query("DROP TABLE test_user");
         @$this->_DB->query("DROP TABLE test_tree");

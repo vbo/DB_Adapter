@@ -26,5 +26,8 @@ require_once 'DB/Adapter/Exception.php';
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 0.1 beta
  */
-class DB_Adapter_Exception_ConnectionError extends DB_Adapter_Exception {}
 
+class DB_Adapter_Exception_ConnectionError extends DB_Adapter_Exception
+{
+
+}

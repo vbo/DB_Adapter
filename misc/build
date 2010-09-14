@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 $sourceDir = dirname(dirname(__FILE__));
-$tmpDir  = dirname($sourceDir) . '/tmp/';
+$tmpDir = dirname($sourceDir) . '/tmp/';
 $destFile = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m') . '.zip';
 
 copySourceDir($sourceDir, $tmpDir, 0);
@@ -11,40 +11,41 @@ system('zip -r ' . $destFile . ' .');
 chdir($sourceDir);
 system('rm -R ' . $tmpDir);
 
-function copySourceDir($source, $destination, $depth) {
-    static $buildDirs    = array('lib', 'doc', 'test');
-    static $foreignLibs  = array('PHPUnit', 'markdown');
+function copySourceDir($source, $destination, $depth)
+{
+    static $buildDirs = array('lib', 'doc', 'test');
+    static $foreignLibs = array('PHPUnit', 'markdown');
     static $specialFiles = array('db-credentials.ini', 'index.php', '.htaccess', '404.php');
-    
+
     $depth++;
     if (is_dir($source)) {
         @mkdir($destination);
-		$directory = dir($source);
-		while (FALSE !== ($readdirectory = $directory->read())) {
-			if ($readdirectory == '.' || $readdirectory == '..' ) {
-				continue;
-			}
-            
-			$PathDir = $source . '/' . $readdirectory;
-			if (is_dir($PathDir)) {
+        $directory = dir($source);
+        while (FALSE !== ($readdirectory = $directory->read())) {
+            if ($readdirectory == '.' || $readdirectory == '..') {
+                continue;
+            }
+
+            $PathDir = $source . '/' . $readdirectory;
+            if (is_dir($PathDir)) {
                 if ($depth == 1 && !in_array($readdirectory, $buildDirs)) {
                     continue;
                 }
                 if ($depth == 2 && in_array($readdirectory, $foreignLibs)) {
                     continue;
                 }
-				copySourceDir($PathDir, $destination . '/' . $readdirectory, $depth);
-				continue;
-			}
+                copySourceDir($PathDir, $destination . '/' . $readdirectory, $depth);
+                continue;
+            }
             if (!in_array(basename($PathDir), $specialFiles)) {
                 copy($PathDir, $destination . '/' . $readdirectory);
             }
-		}        
+        }
 
-		$directory->close();
-	}else {
+        $directory->close();
+    } else {
         if (!in_array(basename($PathDir), $specialFiles)) {
             copy($source, $destination);
         }
-	}
+    }
 }

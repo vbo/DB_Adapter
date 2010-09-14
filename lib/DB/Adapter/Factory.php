@@ -26,8 +26,9 @@
  *
  * @todo Make DB_Adapter_DSN class and rewrite connectors
  */
+
 class DB_Adapter_Factory
-{    
+{
     /**
      * Universal DB connector (uses DSN)
      * Universal static function to connect ANY database using DSN syntax.
@@ -37,15 +38,16 @@ class DB_Adapter_Factory
      * @param   string                 $dsn
      * @return  DB_Adapter_Generic_DB  $object
      */
-    public static function connect ($dsn)
+    public static function connect($dsn)
     {
         $config = self::parseDSN($dsn);
-        if (!$config) return;
-        
+        if (!$config)
+            return;
+
         $driver = self::_loadDriver($config);
-        $driver->setIdentPrefix(@$config['ident_prefix']);        
+        $driver->setIdentPrefix(@$config['ident_prefix']);
         return $driver;
-    }    
+    }
 
     /**
      * Universal DSN parser.
@@ -57,22 +59,24 @@ class DB_Adapter_Factory
      *
      * @todo Throw an Exception if not parsed
      */
-    public static function parseDSN ($dsn)
+    public static function parseDSN($dsn)
     {
-        if (is_array($dsn)) return $dsn;
+        if (is_array($dsn))
+            return $dsn;
         $parsed = @parse_url($dsn);
-        if (!$parsed) return null;
+        if (!$parsed)
+            return null;
         if (!empty($parsed['query'])) {
             $params = null;
             parse_str($parsed['query'], $params);
             $parsed += $params;
         }
 
-        $parsed['dsn'] = $dsn;        
+        $parsed['dsn'] = $dsn;
         return $parsed;
     }
 
-    private static function _loadDriver (array $config)
+    private static function _loadDriver(array $config)
     {
         $classname = self::_determineDriverClassName($config['scheme']);
         if (!class_exists($classname)) {
@@ -83,10 +87,10 @@ class DB_Adapter_Factory
         return new $classname($config);
     }
 
-    private static function _determineDriverClassName ($dbtype)
+    private static function _determineDriverClassName($dbtype)
     {
         $dbtype = ucfirst($dbtype);
-        $class  = "DB_Adapter_{$dbtype}_DB";
+        $class = "DB_Adapter_{$dbtype}_DB";
         return $class;
     }
-};
+}

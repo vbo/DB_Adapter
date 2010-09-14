@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Interface for user-defined logger
  *
@@ -25,5 +26,5 @@
  */
 interface DB_Adapter_LoggerI
 {
-    public function log ($mess);
+    public function log($mess);
 }
