@@ -28,7 +28,6 @@ require_once 'DB/Adapter/Generic/DB.php';
  *
  * @todo Add more comments
  */
-
 class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 {
     private $link;

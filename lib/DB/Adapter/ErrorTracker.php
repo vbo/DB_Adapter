@@ -24,7 +24,6 @@
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 0.1 beta
  */
-
 class DB_Adapter_ErrorTracker
 {
     private static $ignoresInTraceRe = 'DB_Adapter_.*::.* | call_user_func.*';

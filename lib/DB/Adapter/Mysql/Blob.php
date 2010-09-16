@@ -28,7 +28,6 @@ require_once 'DB/Adapter/Generic/Blob.php';
  *
  * @todo    Test it
  */
-
 class DB_Adapter_MySQL_Blob extends DB_Adapter_Generic_Blob
 {
     // MySQL does not support separate BLOB fetching.

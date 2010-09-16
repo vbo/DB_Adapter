@@ -26,7 +26,6 @@
  *
  * @todo Make DB_Adapter_DSN class and rewrite connectors
  */
-
 class DB_Adapter_Factory
 {
     /**
