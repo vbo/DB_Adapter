@@ -17,18 +17,28 @@ ini_set('display_errors','On');
 set_include_path(dirname(__FILE__) . PATH_SEPARATOR . get_include_path());
 set_include_path(dirname(dirname(__FILE__)) . PATH_SEPARATOR . get_include_path());
 
-require_once 'TestConfig.php';
+require_once 'TestHelper.php';
 require_once dirname(__FILE__) . '/../lib/config.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/TextUI/Command.php';
 
-$group = @$_SERVER['argv'][1];
-$_SERVER['argv'][1] = '--group';
-$_SERVER['argv'][2] = $group ? $group : 'All';
-$_SERVER['argv'][3] = dirname(__FILE__);
+if (@$_SERVER['argv'][1] != '--standart') {
+    $group = @$_SERVER['argv'][1];
+    $_SERVER['argv'][1] = '--group';
+    $_SERVER['argv'][2] = $group ? $group : 'All';
+    $_SERVER['argv'][3] = realpath(dirname(__FILE__));
+} else {
+    unset($_SERVER['argv'][1]);
+    $argv = array();
+    foreach ($_SERVER['argv'] as $a) {
+        $argv[] = $a;
+    }
+    $_SERVER['argv'] = $argv;
+}
+
 echo "Trying to execute " . join(' ', $_SERVER['argv']) . "...\n\n";
 
-TestConfig::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
+TestHelper::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
 PHPUnit_TextUI_Command::main();

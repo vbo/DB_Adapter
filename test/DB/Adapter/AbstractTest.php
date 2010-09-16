@@ -24,14 +24,6 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
         ),
     );
 
-    abstract function testStringPH();
-    abstract function testDigitPH();
-    abstract function testFloatPH();
-    abstract function testLinkPH();
-    abstract function testListPH();
-    abstract function testHashPH();
-    abstract function testIdPH();
-
     public function setUp()
     {
         $this->_connect();
@@ -43,6 +35,90 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
         $this->assertNotNull($this->_DB);
     }
 
+    /**
+     * @dataProvider stringPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testStringPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function stringPHDataProvider();
+
+    /**
+     * @dataProvider digitPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testDigitPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?d', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function digitPHDataProvider();
+
+    /**
+     * @dataProvider floatPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testFloatPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?f', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function floatPHDataProvider();
+
+    /**
+     * @dataProvider linkPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testLinkPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?n', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function linkPHDataProvider();
+
+    /**
+     * @dataProvider listPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testListPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?a', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function listPHDataProvider();
+
+    /**
+     * @dataProvider hashPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testHashPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?a', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function hashPHDataProvider();
+
+    /**
+     * @dataProvider idPHDataProvider
+     * @depends testConnectionSucceeded
+     */
+    public function testIdPH($case, $expectedResult)
+    {
+        @$this->_DB->query('?#', $case);
+        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
+    }
+
+    abstract function idPHDataProvider();
+    
     public function testConnectionFailed()
     {
         $this->setExpectedException('DB_Adapter_Exception_ConnectionError');
@@ -68,6 +144,15 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
     {
         $this->_DB->query("\t\t\t SELECT * \n FROM  test_user");
         $this->assertEquals('SELECT * FROM test_user', $this->_DB->getLastQuery($inline = true));
+    }
+
+    /**
+     * @depends testConnectionSucceeded
+     */
+    public function testQueryError()
+    {
+        $this->setExpectedException('DB_Adapter_Exception_QueryError');
+        $this->_DB->query("SOME BAD QUERY");
     }
 
     /**
@@ -131,7 +216,7 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
             is_null($active) ? DB_ADAPTER_SKIP : $active
         );
 
-        $this->assertEquals($query, trim($this->_DB->getLastQuery($inline = true)));
+        $this->assertEquals($query, $this->_DB->getLastQuery($inline = true));
     }
 
     public function conditionsProvider()
@@ -144,9 +229,13 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
 
     protected function _connect()
     {
-        $this->_DB = DB_Adapter_Factory::connect(
-                TestConfig::$dsn[$this->_dbtype]
-        );
+        if (empty(TestHelper::$dbInstances[$this->_dbtype])) {
+            TestHelper::$dbInstances[$this->_dbtype] = DB_Adapter_Factory::connect(
+                TestHelper::$dsn[$this->_dbtype]
+            );
+        }
+
+        $this->_DB = TestHelper::$dbInstances[$this->_dbtype];
     }
 
     protected function _createTestTables()

@@ -5,16 +5,72 @@ require_once 'DB/Adapter/AbstractTest.php';
 /**
  * @group Mysql
  * @group All
+ * @isolated
  */
 class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
 {
     protected $_dbtype = 'mysql';
 
-    public function testStringPH() {}
-    public function testDigitPH() {}
-    public function testFloatPH() {}
-    public function testLinkPH() {}
-    public function testListPH() {}
-    public function testHashPH() {}
-    public function testIdPH() {}
+    public function stringPHDataProvider()
+    {
+        return array(
+            array('1', "'1'"),
+            array(1, "'1'"),
+            array(0, "'0'"),
+            array('Hello world', "'Hello world'"),
+            array(null, "NULL"),
+        );
+    }
+
+    public function digitPHDataProvider() 
+    {
+        return array(
+            array('1', "1"),
+            array('1a', "1"),
+            array(1, "1"),
+            array(null, "NULL"),
+        );
+    }
+
+    public function floatPHDataProvider() 
+    {
+        return array(
+            array(1, "1"),
+            array(1.5, "1.5"),
+            array(1.5, "1.5"),
+            array(null, "NULL"),
+        );
+    }
+
+    public function linkPHDataProvider()
+    {
+        return array(
+            array(1, "1"),
+            array(null, "NULL"),
+        );
+    }
+
+    public function listPHDataProvider()
+    {
+        return array(
+            array(1, "DB_ADAPTER_ERROR_VALUE_NOT_ARRAY"),
+            array(null, "DB_ADAPTER_ERROR_VALUE_NOT_ARRAY"),
+        );
+    }
+
+    public function hashPHDataProvider()
+    {
+        return array(
+            array(1, "DB_ADAPTER_ERROR_VALUE_NOT_ARRAY"),
+            array(null, "DB_ADAPTER_ERROR_VALUE_NOT_ARRAY"),
+        );
+    }
+
+    public function idPHDataProvider()
+    {
+        return array(
+            array('some', "`some`"),
+            array(null, "``"),
+        );
+    }
 }
