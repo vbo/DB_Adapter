@@ -1,9 +1,9 @@
 <?php
 
-require_once 'PHPUnit/Framework.php';
+require_once 'DB/Adapter/AbstractPHTest.php';
 require_once 'DB/Adapter/Factory.php';
 
-abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
+abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
 {
     protected $_DB;
     protected $_dbtype;
@@ -34,90 +34,6 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
     {
         $this->assertNotNull($this->_DB);
     }
-
-    /**
-     * @dataProvider stringPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testStringPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function stringPHDataProvider();
-
-    /**
-     * @dataProvider digitPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testDigitPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?d', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function digitPHDataProvider();
-
-    /**
-     * @dataProvider floatPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testFloatPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?f', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function floatPHDataProvider();
-
-    /**
-     * @dataProvider linkPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testLinkPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?n', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function linkPHDataProvider();
-
-    /**
-     * @dataProvider listPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testListPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?a', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function listPHDataProvider();
-
-    /**
-     * @dataProvider hashPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testHashPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?a', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function hashPHDataProvider();
-
-    /**
-     * @dataProvider idPHDataProvider
-     * @depends testConnectionSucceeded
-     */
-    public function testIdPH($case, $expectedResult)
-    {
-        @$this->_DB->query('?#', $case);
-        $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
-    }
-
-    abstract function idPHDataProvider();
     
     public function testConnectionFailed()
     {

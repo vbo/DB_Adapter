@@ -22,34 +22,6 @@ class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
         );
     }
 
-    public function digitPHDataProvider() 
-    {
-        return array(
-            array('1', "1"),
-            array('1a', "1"),
-            array(1, "1"),
-            array(null, "NULL"),
-        );
-    }
-
-    public function floatPHDataProvider() 
-    {
-        return array(
-            array(1, "1"),
-            array(1.5, "1.5"),
-            array(1.5, "1.5"),
-            array(null, "NULL"),
-        );
-    }
-
-    public function linkPHDataProvider()
-    {
-        return array(
-            array(1, "1"),
-            array(null, "NULL"),
-        );
-    }
-
     public function listPHDataProvider()
     {
         return array(
