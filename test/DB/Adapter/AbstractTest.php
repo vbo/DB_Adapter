@@ -24,6 +24,14 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
         ),
     );
 
+    abstract function testStringPH();
+    abstract function testDigitPH();
+    abstract function testFloatPH();
+    abstract function testLinkPH();
+    abstract function testListPH();
+    abstract function testHashPH();
+    abstract function testIdPH();
+
     public function setUp()
     {
         $this->_connect();
@@ -93,7 +101,7 @@ abstract class DB_Adapter_AbstractTest extends PHPUnit_Framework_TestCase
      * @depends testConnectionSucceeded
      * @depends testIdentPrefixPH
      */
-    public function testListPH()
+    public function testCommonFunctionality()
     {
         $this->_createTestTables();
         foreach ($this->_testUsers as $u) {
