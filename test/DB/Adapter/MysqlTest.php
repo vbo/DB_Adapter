@@ -5,7 +5,6 @@ require_once 'DB/Adapter/AbstractTest.php';
 /**
  * @group Mysql
  * @group All
- * @isolated
  */
 class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
 {
