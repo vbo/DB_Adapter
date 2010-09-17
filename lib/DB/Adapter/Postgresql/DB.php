@@ -31,7 +31,7 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
     private $link;
     private $config;
 
-    public function  __construct(array $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
         $this->link = $this->_connect();
@@ -43,11 +43,15 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
     private function _connect()
     {
         $connectionParams = array();
-        $recognizedParams = array('host', 'port', 'user', 'pass');
+        $recognizedParams = array('host', 'port', 'user');
         foreach ($recognizedParams as $param) {
             if (!empty($this->config[$param])) {
                 $connectionParams[] = $param . '=' . $this->config[$param];
             }
+        }
+
+        if (!empty($this->config['pass'])) {
+            $connectionParams[] = 'password=' . $this->config['pass'];
         }
 
         $dbname = preg_replace('{^/}s', '', $this->config['path']);
@@ -62,11 +66,11 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
             if (!error_reporting()) {
                 return;
             }
-
             require_once 'DB/Adapter/Exception/ConnectionError.php';
-            throw new DB_Adapter_Exception_ConnectionError($errno, $primary_info, $error, $this);
+            throw new DB_Adapter_Exception_ConnectionError(
+                0, 'Connection failed', "pg_connect('{$connectionString}')", $this
+            );
         }
-
         return $link;
     }
 
@@ -147,7 +151,7 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
      */
     protected function _performCommit()
     {
-        
+
     }
 
     /**
