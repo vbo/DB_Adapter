@@ -55,6 +55,7 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
 
     /**
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testGetLastQueryInline()
     {
@@ -91,6 +92,7 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
 
     /**
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testIdentPrefixPH()
     {

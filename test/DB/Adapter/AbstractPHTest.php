@@ -3,10 +3,11 @@
 require_once 'PHPUnit/Framework.php';
 
 abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
-{
+{    
     /**
      * @dataProvider stringPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testStringPH($case, $expectedResult)
     {
@@ -19,6 +20,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider digitPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testDigitPH($case, $expectedResult)
     {
@@ -39,6 +41,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider floatPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testFloatPH($case, $expectedResult)
     {
@@ -59,6 +62,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider linkPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testLinkPH($case, $expectedResult)
     {
@@ -77,6 +81,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider listPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testListPH($case, $expectedResult)
     {
@@ -89,6 +94,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider hashPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testHashPH($case, $expectedResult)
     {
@@ -101,6 +107,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider idPHDataProvider
      * @depends testConnectionSucceeded
+     * @depends testGetLastQuery
      */
     public function testIdPH($case, $expectedResult)
     {

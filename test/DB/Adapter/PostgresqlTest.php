@@ -6,10 +6,9 @@ require_once 'DB/Adapter/AbstractTest.php';
  * @group Postgresql
  * @group NotImplemented
  */
-class DB_Adapter_PostgresqlTest extends PHPUnit_Framework_TestCase
+class DB_Adapter_PostgresqlTest extends DB_Adapter_AbstractTest
 {
     protected $_dbtype = 'postgresql';
-
 
     public function setUp()
     {
