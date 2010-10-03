@@ -1,1 +1,7 @@
-test
+DB_Adapter PHP library provides elegant interface for some SQL databases.
+It supports several types of handy and secure placeholders
+and provide comfortable debugging.
+
+Now DB_Adapter supports only MySQL and PostgreSQL databases.
+
+See also: http://db-adapter.in-source.ru/
