@@ -207,4 +207,9 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         require_once 'DB/Adapter/Exception/ConnectionError.php';
         throw new DB_Adapter_Exception_ConnectionError($errno, $primary_info, $error, $this);
     }
+
+    protected function  _performGetNativePlaceholderMarker($n)
+    {
+        return '?';
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+require_once 'DB/Adapter/DBInterface.php';
+
 /**
  * Use this constant as placeholder value to skip optional SQL block {...}.
  */
@@ -29,7 +31,7 @@ define('DB_ADAPTER_SKIP', log(0));
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 10.10 beta
  */
-abstract class DB_Adapter_Generic_DB
+abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
 {
     /**
      * Names of special columns in result-set which is used
@@ -74,10 +76,6 @@ abstract class DB_Adapter_Generic_DB
     private $_placeholderArgs, $_placeholderNativeArgs, $_placeholderCache = array();
     private $_placeholderNoValueFound;
 
-    /**
-     * Returns last user query text (for debug porposes)
-     * @return string
-     */
     public function getLastQuery($inline=false)
     {
         $q = $this->_lastQuery;
@@ -91,51 +89,29 @@ abstract class DB_Adapter_Generic_DB
         return $q;
     }
 
-    /**
-     * Create new blob
-     * @return DB_Adapter_Generic_Blob
-     */
     public function blob($blob_id = null)
     {
         return $this->_performNewBlob($blob_id);
     }
 
-    /**
-     * Create new transaction.
-     * @return mixed
-     */
     public function transaction($mode=null)
     {
         $this->_logQuery('-- START TRANSACTION ' . $mode);
         return $this->_performTransaction($mode);
     }
 
-    /**
-     * Commit the transaction.
-     * @return mixed
-     */
     public function commit()
     {
         $this->_logQuery('-- COMMIT');
         return $this->_performCommit();
     }
 
-    /**
-     * Rollback the transaction.
-     * @return mixed
-     */
     public function rollback()
     {
         $this->_logQuery('-- ROLLBACK');
         return $this->_performRollback();
     }
 
-    /**
-     * Execute query and return the result.
-     * @param  string  $query Query text
-     * @param  mixed   [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return hash[]  $result
-     */
     public function select($query)
     {
         $total = false;
@@ -143,13 +119,6 @@ abstract class DB_Adapter_Generic_DB
         return $this->_query($args, $total);
     }
 
-    /**
-     * Execute query and return the result.
-     * @param  &int   $total Total number of records
-     * @param  string $query Query text
-     * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return hash[] $result
-     */
     public function selectPage(&$total, $query)
     {
         $total = true;
@@ -158,15 +127,6 @@ abstract class DB_Adapter_Generic_DB
         return $this->_query($args, $total);
     }
 
-    /**
-     * Return the first row of query result.
-     * If no one row found, return array()! It is useful while debugging,
-     * because PHP DOES NOT generates notice on $row['abc'] if $row === null
-     * or $row === false (but, if $row is empty array, notice is generated).
-     * @param  string $query Query text
-     * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return hash $result
-     */
     public function selectRow($query)
     {
         $total = false;
@@ -182,12 +142,6 @@ abstract class DB_Adapter_Generic_DB
         return current($rows);
     }
 
-    /**
-     * Return the first column of query result as array.
-     * @param  string $query Query text
-     * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return array  $result
-     */
     public function selectCol($query)
     {
         $total = false;
@@ -200,13 +154,6 @@ abstract class DB_Adapter_Generic_DB
         return $rows;
     }
 
-    /**
-     * Return the first cell of the first column of query result.
-     * If no one row selected, return null.
-     * @param  string $query Query text
-     * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return scalar $result
-     */
     public function selectCell($query)
     {
         $total = false;
@@ -227,12 +174,6 @@ abstract class DB_Adapter_Generic_DB
         return current($row);
     }
 
-    /**
-     * Alias for select(). May be used for INSERT, UPDATE, etc... queries.
-     * @param  string $query Query text
-     * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
-     * @return scalar $result
-     */
     public function query($query)
     {
         $total = false;
@@ -240,37 +181,18 @@ abstract class DB_Adapter_Generic_DB
         return $this->_query($args, $total);
     }
 
-    /**
-     * Enclose the string into database quotes correctly escaping
-     * special characters. If $isIdent is true, value quoted as identifier
-     * (e.g.: `value` in MySQL, "value" in Firebird, [value] in MSSQL).
-     * @param  string $s       String for escape
-     * @param  bool   $isIdent Its identifier value?
-     * @return string $escaped
-     */
     public function escape($s, $isIdent=false)
     {
         return $this->_performEscape($s, $isIdent);
     }
 
-    /**
-     * Set query logger called before each query is executed.
-     * Returns previous logger.
-     * @param  DB_Adapter_LoggerI/null $logger New logger instance
-     * @return DB_Adapter_LoggerI/null $logger Prev logger instance
-     */
-    public function setLogger($logger)
+    public function setLogger(DB_Adapter_LoggerInterface $logger)
     {
         $prev = $this->_logger;
         $this->_logger = $logger;
         return $prev;
     }
 
-    /**
-     * Set identifier prefix used for $_ placeholder.
-     * @param  string $prefix New prefix
-     * @return string $prefix Prev prefix
-     */
     public function setIdentPrefix($prefix=null)
     {
         $old = $this->_identPrefix;
@@ -280,10 +202,6 @@ abstract class DB_Adapter_Generic_DB
         return $old;
     }
 
-    /**
-     * Returns various statistical information.
-     * @return array
-     */
     public function getStatistics()
     {
         return $this->_statistics;
@@ -357,10 +275,7 @@ abstract class DB_Adapter_Generic_DB
      * default ''
      * @return string
      */
-    protected function _performGetPlaceholderIgnoreRe()
-    {
-        return '';
-    }
+    protected abstract function _performGetPlaceholderIgnoreRe();
 
     /**
      * Returns marker for native database placeholder. E.g. in FireBird it is '?',
@@ -368,13 +283,9 @@ abstract class DB_Adapter_Generic_DB
      * @param  int $n Number of native placeholder from the beginning of the query (begins from 0!).
      * @return string String representation of native placeholder marker (by default - '?').
      */
-    protected function _performGetNativePlaceholderMarker($n)
-    {
-        return '?';
-    }
+    protected abstract function _performGetNativePlaceholderMarker($n);
 
     /**
-     * @see _performQuery().
      * @return array
      */
     private function _query(array $query, &$total)
@@ -668,7 +579,7 @@ abstract class DB_Adapter_Generic_DB
      */
     private static function _microtime()
     {
-        $t = explode(" ", microtime());
+        $t = explode(' ', microtime());
         return $t[0] + $t[1];
     }
 

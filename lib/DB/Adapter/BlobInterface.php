@@ -1,9 +1,7 @@
 <?php
 
-require_once 'DB/Adapter/BlobInterface.php';
-
 /**
- * Generic database BLOB object
+ * Generic database BLOB object interface
  *
  * @package DB_Adapter
  *
@@ -13,7 +11,7 @@ require_once 'DB/Adapter/BlobInterface.php';
  *
  * (c) DB_Adapter community
  * @see http://db-adapter.in-source.ru
- * 
+ *
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
  *
@@ -26,7 +24,29 @@ require_once 'DB/Adapter/BlobInterface.php';
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 10.10 beta
  */
-abstract class DB_Adapter_Generic_Blob implements DB_Adapter_BlobInterface
+interface DB_Adapter_BlobInterface
 {
+    /**
+     * Returns following $length bytes from the blob.
+     * @return string
+     */
+    public function read($len);
 
+    /**
+     * Appends data to blob.
+     * @return string
+     */
+    public function write($data);
+
+    /**
+     * Returns length of the blob.
+     * @return int
+     */
+    public function length();
+
+    /**
+     * Closes the blob. Return its ID. No other way to obtain this ID!
+     * @return int $blobid
+     */
+    public function close();
 }

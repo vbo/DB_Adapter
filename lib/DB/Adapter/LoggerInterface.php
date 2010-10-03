@@ -1,9 +1,7 @@
 <?php
 
-require_once 'DB/Adapter/BlobInterface.php';
-
 /**
- * Generic database BLOB object
+ * Interface for user-defined logger
  *
  * @package DB_Adapter
  *
@@ -26,7 +24,7 @@ require_once 'DB/Adapter/BlobInterface.php';
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 10.10 beta
  */
-abstract class DB_Adapter_Generic_Blob implements DB_Adapter_BlobInterface
+interface DB_Adapter_LoggerInterface
 {
-
+    public function log($mess);
 }
