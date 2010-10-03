@@ -30,8 +30,8 @@ require_once 'DB/Adapter/Generic/DB.php';
  */
 class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 {
-    private $link;
-    private $config;
+    private $_link;
+    private $_config;
 
     /**
      * Class constructor.
@@ -40,8 +40,8 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
      */
     public function __construct(array $config)
     {
-        $this->config = $config;
-        $this->link = $this->_connect();
+        $this->_config = $config;
+        $this->_link = $this->_connect();
         $this->_selectDB();
         if (isset($config["charset"])) {
             $this->query('SET NAMES ?', $config["charset"]);
@@ -50,7 +50,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 
     private function _connect()
     {
-        $c = $this->config;
+        $c = $this->_config;
         if (!empty($c['port'])) {
             $c['host'] .= ":{$c['port']}";
         }
@@ -67,8 +67,8 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 
     private function _selectDB()
     {
-        $dbname = preg_replace('{^/}s', '', $this->config['path']);
-        $db_selected = @mysql_select_db($dbname, $this->link);
+        $dbname = preg_replace('{^/}s', '', $this->_config['path']);
+        $db_selected = @mysql_select_db($dbname, $this->_link);
         if (!$db_selected) {
             return $this->_raiseConnectionError('mysql_select_db', array($dbname));
         }
@@ -77,7 +77,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
     protected function _performEscape($s, $isIdent=false)
     {
         if (!$isIdent) {
-            $s = mysql_real_escape_string($s, $this->link);
+            $s = mysql_real_escape_string($s, $this->_link);
             return "'{$s}'";
         }
 
@@ -146,7 +146,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
     {
         $this->_lastQuery = $queryMain;
         $this->_expandPlaceholders($queryMain, false);
-        $result = @mysql_query($queryMain[0], $this->link);
+        $result = @mysql_query($queryMain[0], $this->_link);
 
         if ($result === false) {
             return $this->_raiseQueryError();
@@ -154,10 +154,10 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         if (!is_resource($result)) {
             // INSERT queries return generated ID.
             if (preg_match('/^\s* INSERT \s+/six', $queryMain[0])) {
-                return @mysql_insert_id($this->link);
+                return @mysql_insert_id($this->_link);
             }
             // Non-SELECT queries return number of affected rows, SELECT - resource.
-            return @mysql_affected_rows($this->link);
+            return @mysql_affected_rows($this->_link);
         }
         return $result;
     }
@@ -165,7 +165,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
     protected function _performFetch($result)
     {
         $row = @mysql_fetch_assoc($result);
-        if (mysql_error ()) {
+        if (mysql_error()) {
             return $this->_raiseQueryError();
         }
         if ($row === false) {
@@ -191,7 +191,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         }
         require_once 'DB/Adapter/Exception/QueryError.php';
         throw new DB_Adapter_Exception_QueryError(
-            mysql_errno($this->link), $this->getLastQuery(), mysql_error($this->link), $this
+            mysql_errno($this->_link), $this->getLastQuery(), mysql_error($this->_link), $this
         );
     }
 
@@ -200,8 +200,8 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         if (!error_reporting()) {
             return;
         }
-        $errno = $this->link ? mysql_errno($this->link) : mysql_errno();
-        $error = $this->link ? mysql_error($this->link) : mysql_error();
+        $errno = $this->_link ? mysql_errno($this->_link) : mysql_errno();
+        $error = $this->_link ? mysql_error($this->_link) : mysql_error();
         $str_params = join("', '", $conn_params);
         $primary_info = "{$func} ('{$str_params}')";
         require_once 'DB/Adapter/Exception/ConnectionError.php';

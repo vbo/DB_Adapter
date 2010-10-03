@@ -30,28 +30,28 @@ require_once 'DB/Adapter/Generic/Blob.php';
  */
 class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
 {
-    public $blob;
-    public $id;
-    public $database;
+    private $_blob;
+    private $_id;
+    private $_database;
 
     public function __construct($database, $id=null)
     {
-        $this->database = $database;
-        $this->database->transaction();
-        $this->id = $id;
-        $this->blob = null;
+        $this->_database = $database;
+        $this->_database->transaction();
+        $this->_id = $id;
+        $this->_blob = null;
     }
 
     public function read($len)
     {
-        if ($this->id === false) {
+        if ($this->_id === false) {
             return '';
         }
         if (!($e=$this->_firstUse())) {
             return $e;
         }
 
-        $data = @pg_lo_read($this->blob, $len);
+        $data = @pg_lo_read($this->_blob, $len);
         if ($data === false) {
             return $this->_raiseError('read');
         }
@@ -64,7 +64,7 @@ class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
             return $e;
         }
 
-        $ok = @pg_lo_write($this->blob, $data);
+        $ok = @pg_lo_write($this->_blob, $data);
         if ($ok === false) {
             return $this->_raiseError('add data to');
         }
@@ -77,17 +77,17 @@ class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
         if (!($e=$this->_firstUse())) {
             return $e;
         }
-        if ($this->blob) {
-            $id = @pg_lo_close($this->blob);
+        if ($this->_blob) {
+            $id = @pg_lo_close($this->_blob);
             if ($id === false) {
                 return $this->_raiseError('close');
             }
-            $this->blob = null;
+            $this->_blob = null;
         } else {
             $id = null;
         }
-        $this->database->commit();
-        return $this->id ? $this->id : $id;
+        $this->_database->commit();
+        return $this->_id ? $this->_id : $id;
     }
 
     public function length()
@@ -96,9 +96,9 @@ class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
             return $e;
         }
 
-        @pg_lo_seek($this->blob, 0, PGSQL_SEEK_END);
-        $len = @pg_lo_tell($this->blob);
-        @pg_lo_seek($this->blob, 0, PGSQL_SEEK_SET);
+        @pg_lo_seek($this->_blob, 0, PGSQL_SEEK_END);
+        $len = @pg_lo_tell($this->_blob);
+        @pg_lo_seek($this->_blob, 0, PGSQL_SEEK_SET);
 
         if (!$len) {
             return $this->_raiseError('get length of');
@@ -108,28 +108,27 @@ class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
 
     private function _firstUse()
     {
-        if (is_resource($this->blob)) return true;
+        if (is_resource($this->_blob)) return true;
 
-        if ($this->id !== null) {
-            $this->blob = @pg_lo_open($this->database->link, $this->id, 'rw');
-            if ($this->blob === false) {
+        if ($this->_id !== null) {
+            $this->_blob = @pg_lo_open($this->_database->link, $this->_id, 'rw');
+            if ($this->_blob === false) {
                 return $this->_raiseError('open');
             }
         } else {
-            $this->id = @pg_lo_create($this->database->link);
-            $this->blob = @pg_lo_open($this->database->link, $this->id, 'w');
-            if ($this->blob === false) {
+            $this->_id = @pg_lo_create($this->_database->link);
+            $this->_blob = @pg_lo_open($this->_database->link, $this->_id, 'w');
+            if ($this->_blob === false) {
                 return $this->_raiseError('create');
             }
         }
         return true;
     }
 
-    function _raiseError($query)
+    private function _raiseError($query)
     {
         return;
-        $hId = $this->id === null? "null" : ($this->id === false? "false" : $this->id);
-        $query = "-- $query BLOB $hId";
-        $this->database->_setDbError($query);
+        $hId = $this->_id === null ? "null" : ($this->_id === false? "false" : $this->_id);
+        $query = "-- $query BLOB $hId";        
     }
 }

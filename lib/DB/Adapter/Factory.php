@@ -60,11 +60,13 @@ class DB_Adapter_Factory
      */
     public static function parseDSN($dsn)
     {
-        if (is_array($dsn))
+        if (is_array($dsn)) {
             return $dsn;
+        }
         $parsed = @parse_url($dsn);
-        if (!$parsed)
+        if (!$parsed) {
             return null;
+        }
         if (!empty($parsed['query'])) {
             $params = null;
             parse_str($parsed['query'], $params);

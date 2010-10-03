@@ -31,34 +31,34 @@ require_once 'DB/Adapter/Generic/Blob.php';
 class DB_Adapter_MySQL_Blob extends DB_Adapter_Generic_Blob
 {
     // MySQL does not support separate BLOB fetching.
-    private $blobdata = null;
-    private $curSeek = 0;
+    private $_blobdata = null;
+    private $_curSeek = 0;
 
     public function __construct($database, $blobdata=null)
     {
-        $this->blobdata = $blobdata;
-        $this->curSeek = 0;
+        $this->_blobdata = $blobdata;
+        $this->_curSeek = 0;
     }
 
     public function read($len)
     {
-        $p = $this->curSeek;
-        $this->curSeek = min($this->curSeek + $len, strlen($this->blobdata));
-        return substr($this->blobdata, $this->curSeek, $len);
+        $p = $this->_curSeek;
+        $this->_curSeek = min($this->_curSeek + $len, strlen($this->_blobdata));
+        return substr($this->_blobdata, $this->_curSeek, $len);
     }
 
     public function write($data)
     {
-        $this->blobdata .= $data;
+        $this->_blobdata .= $data;
     }
 
     public function close()
     {
-        return $this->blobdata;
+        return $this->_blobdata;
     }
 
     public function length()
     {
-        return strlen($this->blobdata);
+        return strlen($this->_blobdata);
     }
 }
