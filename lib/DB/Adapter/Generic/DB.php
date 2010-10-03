@@ -27,7 +27,7 @@ define('DB_ADAPTER_SKIP', log(0));
  * @see http://www.gnu.org/copyleft/lesser.html
  *
  * @author  Borodin Vadim <vb@in-source.ru>
- * @version 0.1 beta
+ * @version 10.10 beta
  */
 abstract class DB_Adapter_Generic_DB
 {

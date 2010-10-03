@@ -23,7 +23,7 @@
  * @see http://www.gnu.org/copyleft/lesser.html
  *
  * @author  Borodin Vadim <vb@in-source.ru>
- * @version 0.1 beta
+ * @version 10.10 beta
  */
 
 error_reporting(E_ALL);

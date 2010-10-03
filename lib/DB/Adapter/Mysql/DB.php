@@ -24,7 +24,7 @@ require_once 'DB/Adapter/Generic/DB.php';
  * @see http://www.gnu.org/copyleft/lesser.html
  *
  * @author  Borodin Vadim <vb@in-source.ru>
- * @version 0.1 beta
+ * @version 10.10 beta
  *
  * @todo Add more comments
  */
