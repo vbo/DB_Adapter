@@ -28,7 +28,7 @@ class DB_Adapter_Exception extends Exception
 {
     /**
      * Primary information about error context.
-     * In query errors its contains query text, etc...
+     * In query errors it contains query text, etc...
      * @var string
      */
     public $primary_info;
@@ -55,7 +55,7 @@ class DB_Adapter_Exception extends Exception
     {
         parent::__construct($message, $code);
         $this->primary_info = $primary_info;
-        $this->message = $message;
+        $this->message = $message . ' : ' . $primary_info;
         $this->code = $code;
         $this->dbo = $dbo;
     }

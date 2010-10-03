@@ -15,7 +15,10 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
     }
 
-    abstract function stringPHDataProvider();
+    public function stringPHDataProvider()
+    {
+        return array();
+    }
 
     /**
      * @dataProvider digitPHDataProvider
@@ -30,12 +33,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
 
     public function digitPHDataProvider()
     {
-        return array(
-            array('1', "1"),
-            array('1a', "1"),
-            array(1, "1"),
-            array(null, "NULL"),
-        );
+        return array();
     }
 
     /**
@@ -51,12 +49,7 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
 
     public function floatPHDataProvider()
     {
-        return array(
-            array(1, "1"),
-            array(1.5, "1.5"),
-            array(1.5, "1.5"),
-            array(null, "NULL"),
-        );
+        return array();
     }
 
     /**
@@ -89,7 +82,10 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
     }
 
-    abstract function listPHDataProvider();
+    public function listPHDataProvider()
+    {
+        return array();
+    }
 
     /**
      * @dataProvider hashPHDataProvider
@@ -102,7 +98,10 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
     }
 
-    abstract function hashPHDataProvider();
+    public function hashPHDataProvider()
+    {
+        return array();
+    }
 
     /**
      * @dataProvider idPHDataProvider
@@ -115,5 +114,8 @@ abstract class DB_Adapter_AbstractPHTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedResult, $this->_DB->getLastQuery());
     }
 
-    abstract function idPHDataProvider();
+    public function idPHDataProvider()
+    {
+        return array();
+    }
 }

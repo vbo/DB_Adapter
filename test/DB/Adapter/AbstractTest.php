@@ -7,6 +7,7 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
 {
     protected $_DB;
     protected $_dbtype;
+
     protected $_testUsers = array(
         array(
             'id' => 1,
@@ -22,7 +23,7 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
             'age' => 24,
             'active' => 1
         ),
-    );
+    );    
 
     public function setUp()
     {
@@ -158,19 +159,26 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
 
     protected function _createTestTables()
     {
-        @$this->_DB->query("DROP TABLE test_user");
-        @$this->_DB->query("DROP TABLE test_tree");
+        $this->_DB->query("DROP TABLE IF EXISTS test_user");
+        $this->_DB->query("DROP TABLE IF EXISTS test_tree");
 
         $this->_DB->query("
             CREATE TABLE test_user (
-                id     int(11)      NOT NULL  auto_increment,
+                id     int          NOT NULL,
                 login  varchar(100) NOT NULL,
                 mail   varchar(400) NOT NULL,
-                age    int(11)      NOT NULL,
-                active boolean      DEFAULT FALSE NOT NULL,
-                PRIMARY KEY (id)
-            )
-            ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1"
+                age    int          NOT NULL,
+                active int          DEFAULT 0 NOT NULL
+            )"
         );
+    }
+
+    public function testErrorHandling()
+    {
+        try {
+            $users = $this->_DB->select("SELECT * FROM notexisted");
+        } catch (DB_Adapter_Exception_QueryError $e) {
+            $this->assertEquals('SELECT * FROM notexisted', $e->primary_info);
+        };
     }
 }
