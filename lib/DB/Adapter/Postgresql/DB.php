@@ -3,7 +3,7 @@
 require_once 'DB/Adapter/Generic/DB.php';
 
 /**
- * PostreSQL DB implementation
+ * DB_Adapter database object implementation for PostreSQL
  *
  * @package DB_Adapter
  *
@@ -75,9 +75,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return $link;
     }
 
-    /**
-     * @return string
-     */
     protected function _performEscape($s, $isIdent=false)
     {
         if (!$isIdent) {
@@ -87,9 +84,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         }
     }
 
-    /**
-     * @return DB_Adapter_Generic_Blob $blob
-     */
     protected function _performNewBlob($blobid=null)
     {
         require_once 'DB/Adapter/Postgresql/Blob.php';
@@ -97,9 +91,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return $obj;
     }
 
-    /**
-     * @return array $fields List of BLOB fields names in result set
-     */
     protected function _performGetBlobFieldNames($result)
     {
         $blobFields = array();
@@ -112,12 +103,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return $blobFields;
     }
 
-    /**
-     * Transform query different way specified by $how.
-     * May return some information about performed transform.
-     * @param array& $queryMain
-     * @param string $how
-     */
     protected function _performTransformQuery(array& $queryMain, $how)
     {
         switch ($how) {
@@ -151,13 +136,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return false;
     }
 
-    /**
-     * Must return:
-     * - For SELECT queries: ID of result-set (PHP resource).
-     * - For other  queries: query status (scalar).
-     * - For error  queries: null.
-     * @return mixed $result
-     */
     protected function _performQuery(array $queryMain)
     {
         $this->_lastQuery = $queryMain;
@@ -217,16 +195,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return $result;
     }
 
-    /**
-     * Fetch ONE NEXT row from result-set.
-     * Must return:
-     * - For SELECT queries: all the rows of the query (2d array).
-     * - For INSERT queries: ID of inserted row.
-     * - For UPDATE queries: number of updated rows.
-     * - For other  queries: query status (scalar).
-     * - For error  queries: throw an Exception.
-     * @return mixed $result
-     */
     protected function _performFetch($result)
     {
         $row = @pg_fetch_assoc($result);
@@ -239,36 +207,21 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         return $row;
     }
 
-    /**
-     * Start new transaction.
-     * @return mixed $result
-     */
     protected function _performTransaction($mode=null)
     {
         return $this->query('BEGIN');
     }
 
-    /**
-     * Commit the transaction.
-     * @return mixed $result
-     */
     protected function _performCommit()
     {
         return $this->query('COMMIT');
     }
 
-    /**
-     * Rollback the transaction.
-     * @return mixed $result
-     */
     protected function _performRollback()
     {
         return $this->query('ROLLBACK');
     }
 
-    /**
-     * @todo Fix it
-     */
     protected function _performGetPlaceholderIgnoreRe()
     {
         return '
@@ -285,6 +238,8 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
 
     private function _raiseError($query, $error=null)
     {
+        // We must manual ROLLBACK here. Other case we have an error:
+        // "Current transaction is aborted, commands ignored until end of transaction block"
         $this->rollback();
         $this->_lastQuery = $query;
         if (!error_reporting()) {

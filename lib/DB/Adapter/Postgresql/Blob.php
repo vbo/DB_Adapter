@@ -25,8 +25,6 @@ require_once 'DB/Adapter/Generic/Blob.php';
  *
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 10.10 beta
- *
- * @todo Implement it
  */
 class DB_Adapter_Postgresql_Blob extends DB_Adapter_Generic_Blob
 {

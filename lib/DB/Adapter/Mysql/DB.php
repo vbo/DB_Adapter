@@ -3,7 +3,7 @@
 require_once 'DB/Adapter/Generic/DB.php';
 
 /**
- * MySQL DB implementation
+ * DB_Adapter database object implementation for MySQL
  *
  * @package DB_Adapter
  *
@@ -33,11 +33,6 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
     private $_link;
     private $_config;
 
-    /**
-     * Class constructor.
-     * Connect to MySQL.
-     * @param array $config Parsed DSN
-     */
     public function __construct(array $config)
     {
         $this->_config = $config;

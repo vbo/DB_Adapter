@@ -3,7 +3,8 @@
 require_once 'DB/Adapter/Generic/Blob.php';
 
 /**
- * MySQL BLOB object implementation
+ * MySQL BLOB object implementation.
+ * Blob behaviour (separate fetching) emulated, because of MySQL.
  *
  * @package DB_Adapter
  *
@@ -25,12 +26,9 @@ require_once 'DB/Adapter/Generic/Blob.php';
  *
  * @author  Borodin Vadim <vb@in-source.ru>
  * @version 10.10 beta
- *
- * @todo    Test it
  */
 class DB_Adapter_MySQL_Blob extends DB_Adapter_Generic_Blob
 {
-    // MySQL does not support separate BLOB fetching.
     private $_blobdata = null;
     private $_curSeek = 0;
 
