@@ -11,7 +11,7 @@
 
 СУБД, поддерживаемые в текущей версии библиотеки выделены жирным.
 
-*   [PostgreSQL][]
+*   **[PostgreSQL][]**
 *   **[MySQL][]**
 *   [SQLite][]
 *   [Interbase/Firebird][]
