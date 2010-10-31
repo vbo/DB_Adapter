@@ -31,7 +31,7 @@ class DB_Adapter_Exception extends Exception
      * In query errors it contains query text, etc...
      * @var string
      */
-    public $primary_info;
+    public $primaryInfo;
 
     /**
      * Human-readable error message
@@ -49,31 +49,51 @@ class DB_Adapter_Exception extends Exception
      * Database adapter instance
      * @var DB_Adapter_Generic_DB
      */
-    private $dbo;
+    private $_dbo;
 
-    public function __construct($code, $primary_info, $message, $dbo)
+    public function __construct($code, $primaryInfo, $message, $dbo)
     {
         parent::__construct($message, $code);
-        $this->primary_info = $primary_info;
-        $this->message = $message . ' : ' . $primary_info;
+        $this->primaryInfo = $primaryInfo;
+        $this->message = $message;
         $this->code = $code;
-        $this->dbo = $dbo;
+        $this->_dbo = $dbo;
     }
 
+    /**
+     * Here we create human-readable representation of an error and its context.
+     * @return string
+     */
     public function __toString()
     {
         $context = "unknown";
         require_once 'DB/Adapter/ErrorTracker.php';
-        $c = DB_Adapter_ErrorTracker::findCaller($this->getTrace(), true);
-
-        if ($c) {
-            $context = (isset($c['file']) ? $c['file'] : '?');
-            $context .= ' on line ' . (isset($c['line']) ? $c['line'] : '?');
+        $trace = DB_Adapter_ErrorTracker::findCaller($this->getTrace());
+        if ($trace) {
+            $context = (isset($trace[0]['file']) ? $trace[0]['file'] : '?');
+            $context .= (isset($trace[0]['line']) ? "({$trace[0]['line']})" : '?');
+            $traceAsString = $this->_traceToString($trace);
         }
 
         $errmsg = get_class($this) . ($context ? " in {$context}" : "");
         $errmsg .= "\n" . rtrim($this->message);
-        $errmsg .= "\n" . "Error occurred in {$this->primary_info}";
+        $errmsg .= "\n" . "Error occurred in {$this->primaryInfo}";
+        if ($traceAsString) {
+            $errmsg .= "\n" . "Stack trace:\n" . $traceAsString;
+        }
         return $errmsg;
+    }
+
+    private function _traceToString($trace)
+    {        
+        $srep = '';
+        $levels = 0;
+        foreach ($trace as $level=>$frame) {
+            $func = (isset($frame['class']) ? "{$frame['class']}::" : '') . $frame['function'];
+            $srep .= "#{$level} {$frame['file']}({$frame['line']}): {$func}(...)\n";
+            $levels++;
+        }
+        $srep .= "#{$levels} {main}";
+        return $srep;
     }
 }
