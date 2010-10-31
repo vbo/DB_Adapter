@@ -38,7 +38,7 @@ if (@$_SERVER['argv'][1] != '--standart') {
 
 echo "Trying to execute " . join(' ', $_SERVER['argv']) . "...\n\n";
 
-TestHelper::$dsn = parse_ini_file(dirname(__FILE__) . '/db-credentials.ini');
+TestHelper::$dsn = parse_ini_file(dirname(__FILE__) . '/../config/db-credentials.ini');
 PHPUnit_Util_Filter::addFileToFilter(__FILE__, 'PHPUNIT');
 define('PHPUnit_MAIN_METHOD', 'PHPUnit_TextUI_Command::main');
 PHPUnit_TextUI_Command::main();
