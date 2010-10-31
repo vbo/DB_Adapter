@@ -37,7 +37,7 @@
             <li><a href="/docs/debugging/">Средства отладки</a></li>
         </ul>
     </li>    
-    <li><a href="/more_examples/">Примеры использования</a></li>
+    <li><a href="/usage/">Примеры использования</a></li>
     <li><a href="/help/">Как получить помощь?</a></li>
     <li><a href="/dev/">Информация для разработчиков</a></li>
     <li>&nbsp;</li>
