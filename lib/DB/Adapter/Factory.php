@@ -94,4 +94,9 @@ class DB_Adapter_Factory
         $class = "DB_Adapter_{$dbtype}_DB";
         return $class;
     }
+
+    private function __construct()
+    {
+        
+    }
 }
