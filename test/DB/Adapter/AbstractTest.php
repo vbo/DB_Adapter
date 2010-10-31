@@ -178,7 +178,7 @@ abstract class DB_Adapter_AbstractTest extends DB_Adapter_AbstractPHTest
         try {
             $users = $this->_DB->select("SELECT * FROM notexisted");
         } catch (DB_Adapter_Exception_QueryError $e) {
-            $this->assertEquals('SELECT * FROM notexisted', $e->primary_info);
+            $this->assertEquals('SELECT * FROM notexisted', $e->primaryInfo);
         };
     }
 }
