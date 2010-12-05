@@ -13,7 +13,7 @@ system('rm -R ' . $tmpDir);
 
 function copySourceDir($source, $destination, $depth)
 {
-    static $buildDirs = array('lib', 'doc', 'test', 'config');
+    static $buildDirs = array('lib', 'doc', 'test', 'config', 'usage');
     static $foreignLibs = array('PHPUnit', 'markdown');
     static $specialFiles = array('db-credentials.ini', 'index.php', '.htaccess', '404.php');
 
