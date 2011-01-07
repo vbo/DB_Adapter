@@ -356,18 +356,17 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         // Do common transformations.
         switch ($how) {
             case 'GET_ATTRIBUTES': {
-                    $options = array();
-                    $q = $query[0];
-                    $m = null;
-
-                    while (preg_match('/^ \s* -- [ \t]+ (\w+): ([^\r\n]+) [\r\n]* /sx', $q, $m)) {
-                        $options[$m[1]] = trim($m[2]);
-                        $q = substr($q, strlen($m[0]));
-                    }
-
-                    return $options;
-                    break;
+                $options = array();
+                $q = $query[0];
+                $m = null;
+                while (preg_match('/^ \s* -- [ \t]+ (\w+): ([^\r\n]+) [\r\n]* /sx', $q, $m)) {
+                    $options[$m[1]] = trim($m[2]);
+                    $q = substr($q, strlen($m[0]));
                 }
+
+                return $options;
+                break;
+            }
         }
     }
 

@@ -127,7 +127,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 
             // Perform total calculation.
             case 'GET_TOTAL':
-                $queryMain = array('SELECT FOUND_ROWS()');
+                $queryMain = 'SELECT FOUND_ROWS()';
                 break;
 
             default:
