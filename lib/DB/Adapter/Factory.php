@@ -40,9 +40,9 @@ class DB_Adapter_Factory
     public static function connect($dsn)
     {
         $config = self::parseDSN($dsn);
-        if (!$config)
+        if (!$config) {
             return;
-
+        }        
         $driver = self::_loadDriver($config);
         $driver->setIdentPrefix(@$config['ident_prefix']);
         return $driver;
@@ -95,8 +95,6 @@ class DB_Adapter_Factory
         return $class;
     }
 
-    private function __construct()
-    {
-        
-    }
+    private function __construct() {}
+    private function __clone() {}
 }
