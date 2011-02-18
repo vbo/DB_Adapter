@@ -43,6 +43,11 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
      */
     private function _connect()
     {
+        if (!is_callable('pg_connect')) {
+            require_once 'DB/Adapter/Exception/ConnectionError.php';
+            throw new DB_Adapter_Exception_ConnectionError(
+                0, 'PgSql extension is not installed', 'pg_connect function is not a callable', $this);
+        }
         $connectionParams = array();
         $recognizedParams = array('host', 'port', 'user');
         foreach ($recognizedParams as $param) {
