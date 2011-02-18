@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title><?=$title?></title>
+        <title><?php echo $title?></title>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
         <link rel="stylesheet" href="http://db-adapter.in-source.ru/public/defaults.css" media="all" />
@@ -13,14 +13,14 @@
         
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
         
-        <?php $this_page = array_pop($breadcrumbs); $root_page = @$breadcrumbs[0]; ?>
-        <?php if (!is_null($this_page)):?>            
+        <?php $thisPage = array_pop($breadcrumbs); $rootPage = @$breadcrumbs[0]; ?>
+        <?php if (!is_null($thisPage)):?>
             <script type="text/javascript">
                 $(document).ready(
                     function () {
-                        $('a[href=<?=$this_page['uri']?>]').addClass('this');
-                        <?php if ($root_page):?>
-                            $('a[href=<?=$root_page['uri']?>]').addClass('root');
+                        $('a[href=<?php echo $thisPage['uri']?>]').addClass('this');
+                        <?php if ($rootPage):?>
+                            $('a[href=<?php echo $rootPage['uri']?>]').addClass('root');
                         <?php endif;?>
                     }
                 );
@@ -39,13 +39,13 @@
                         <img alt="DB_Adapter PHP Library" src="/public/images/db_adapter_logo.jpg" />
                     </a>
                     <span id="breadcrumbs">
-                        <?php if (!is_null($this_page)):?>
+                        <?php if (!is_null($thisPage)):?>
                             <?php foreach($breadcrumbs as $bc):?>
-                                <a href="<?=$bc['uri']?>"><?=$bc['title']?></a>
+                                <a href="<?php echo $bc['uri']?>"><?php echo $bc['title']?></a>
                                 &rarr;
                             <?php endforeach;?>
 
-                            <a class="this" href="<?=$this_page['uri']?>"><?=$this_page['title']?></a>
+                            <a class="this" href="<?php echo $thisPage['uri']?>"><?php echo $thisPage['title']?></a>
                         <?php endif;?>
                     </span>
                 </h1>
@@ -97,9 +97,9 @@
 
                                 <div class="content">
                                     <div id="coholder">
-                                        <?=$content?>
+                                        <?php echo $content?>
                                         <div class="meta_ui">
-                                            <a class="view_source" title="<?=$title?>" href="<?=$links['view_source']?>">Исходник &rarr;</a>
+                                            <a class="view_source" title="<?php echo $title?>" href="<?php echo $links['view_source']?>">Исходник &rarr;</a>
                                         </div>
                                     </div>
                                 </div>

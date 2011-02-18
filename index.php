@@ -64,7 +64,7 @@ if ($request_uri == '/download/') {
 }
 
 $request_uri = substr($request_uri, 1, -1);
-$request_file = determine_request_file($request_uri);
+$request_file = determineRequestFile($request_uri);
 if (!file_exists($request_file)) {
     header('HTTP/1.1 404 Not Found');
     include('404.php');
@@ -79,8 +79,8 @@ if (@$_GET['view'] == 'text') {
     header('Content-type: text/plain');
     echo $fcontents;
 } else {
-    $breadcrumbs = create_breadcrumbs($request_uri, $page_header);
-    $title = create_title($breadcrumbs, $page_header);
+    $breadcrumbs = createBreadcrumbs($request_uri, $page_header);
+    $title = createTitle($breadcrumbs, $page_header);
 
     render(array(
         'title' => $title,
@@ -95,7 +95,7 @@ if (@$_GET['view'] == 'text') {
 
 ######################################################
 
-function determine_request_file($uri)
+function determineRequestFile($uri)
 {
     return "doc/{$uri}.text";
 }
@@ -106,7 +106,7 @@ function render($__vars)
     require 'inc/template.php';
 }
 
-function create_breadcrumbs($request_uri, $title)
+function createBreadcrumbs($request_uri, $title)
 {
     $breadcrumbs = array();
     $arr_request_uri = explode('/', $request_uri);
@@ -115,7 +115,7 @@ function create_breadcrumbs($request_uri, $title)
     while (!empty($arr_request_uri)) {
         $bc = array();
         $ru = '/' . join('/', $arr_request_uri);
-        $f = determine_request_file($ru);
+        $f = determineRequestFile($ru);
         $fi = fopen($f, "r");
 
         if (!$fi) {
@@ -139,7 +139,7 @@ function create_breadcrumbs($request_uri, $title)
     return $breadcrumbs;
 }
 
-function create_title($breadcrumbs, $page_header)
+function createTitle($breadcrumbs, $page_header)
 {
     $t = empty($breadcrumbs) ? $page_header : 'DB_Adapter';
     foreach ($breadcrumbs as $bc) {
