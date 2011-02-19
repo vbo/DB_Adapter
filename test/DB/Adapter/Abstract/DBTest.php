@@ -4,6 +4,19 @@ require_once dirname(__FILE__) . '/../AbstractTest.php';
 
 abstract class DB_Adapter_Abstract_DBTest extends DB_Adapter_AbstractTest
 {
+    abstract protected function _createTestTables();
+    abstract protected function _dropTestTables();
+    
+    public function setUp()
+    {
+        $this->_createTestTables();
+    }
+
+    public function tearDown()
+    {
+        $this->_dropTestTables();
+    }
+
     public function testQueryErrorExceptionRaises()
     {
         $this->setExpectedException('DB_Adapter_Exception_QueryError');
@@ -40,5 +53,10 @@ abstract class DB_Adapter_Abstract_DBTest extends DB_Adapter_AbstractTest
         } catch (DB_Adapter_Exception_QueryError $e) {
             $this->assertEquals('QUERY TEXT', $this->_getDB()->getLastQuery($inline = true));
         }
+    }
+
+    public function testIdentPrefixCorrect()
+    {
+        $this->assertEquals($this->_getDB()->setIdentPrefix(), 'test_');
     }
 }
