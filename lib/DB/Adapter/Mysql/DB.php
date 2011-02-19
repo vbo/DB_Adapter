@@ -13,7 +13,7 @@ require_once 'DB/Adapter/Generic/DB.php';
  *
  * (c) DB_Adapter community
  * @see http://db-adapter.in-source.ru
- * 
+ *
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
  *
@@ -49,7 +49,7 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         if (!empty($c['port'])) {
             $c['host'] .= ":{$c['port']}";
         }
-        
+
         $con = @mysql_connect($c['host'], $c['user'], $c['pass'], true);
         if (!$con) {
             $this->_raiseConnectionError(
@@ -197,9 +197,6 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
 
     private function _raiseConnectionError($func, $conn_params)
     {
-        if (!error_reporting()) {
-            return;
-        }
         $errno = $this->_link ? mysql_errno($this->_link) : mysql_errno();
         $error = $this->_link ? mysql_error($this->_link) : mysql_error();
         $str_params = join("', '", $conn_params);
