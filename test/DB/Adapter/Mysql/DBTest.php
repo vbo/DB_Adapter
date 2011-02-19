@@ -23,8 +23,8 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
     {
         $name = md5(time()) . 'db_adapter_unittest';
         $setted = 'bla';
-        $this->_getDB()->query("SET @{$name} = '{$setted}'");
-        $getted = $this->_selectCell('SELECT @' . $name);
+        $this->_getDB()->query("SET @session.{$name} = '{$setted}'");
+        $getted = $this->_selectCell('SELECT @session.' . $name);
         $this->assertEquals($getted, $setted);
     }
 
