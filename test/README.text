@@ -1,0 +1,9 @@
+About tests
+===========
+For testing purpose we must have connections to existing databases.
+You must create `config/db-credentials.ini` file by analogy to `config/db-credentials-example.ini`
+
+Then you must install phpunit library on your machine (http://www.phpunit.de/manual/current/en/installation.html).
+I use this version: PHPUnit 3.5.11
+
+Then you may run tests using default cli test runner (http://www.phpunit.de/manual/current/en/textui.html).
