@@ -7,7 +7,7 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
     protected $_dbtype = 'mysql';
 
     /**
-     * Perform direct DB query
+     * Performs direct DB query
      */
     private function _query($query)
     {
@@ -28,17 +28,35 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
         $this->assertEquals($getted, $setted);
     }
 
+    public function testSelectRow()
+    {
+        $user = $this->_getDB()->selectRow('SELECT * FROM test_user WHERE id = 1');
+        $this->assertEquals($user, array(
+            'id' => 1,
+            'login' => 'testTest',
+            'age' => 21,
+            'active' => 1
+        ));
+    }
+
+    public function testSelectCell()
+    {
+        $login = $this->_getDB()->selectCell('SELECT login FROM test_user WHERE id = 1');
+        $this->assertEquals($login, 'testTest');
+    }
+
     protected function _createTestTables()
     {
         $this->_query('
             CREATE TABLE test_user (
                 id int NOT NULL,
                 login varchar(100) NOT NULL,
-                mail varchar(400) NOT NULL,
                 age int NOT NULL,
                 active int DEFAULT 0 NOT NULL
             )'
         );
+        $this->_query("INSERT INTO test_user VALUES (1, 'testTest',  21, 1)");
+        $this->_query("INSERT INTO test_user VALUES (2, 'testTest2', 28, 0)");
     }
 
     protected function _dropTestTables()
