@@ -2,6 +2,9 @@
 
 require_once dirname(__FILE__) . '/../AbstractTest.php';
 
+/**
+ * @todo tests for ident-prefix PH
+ */
 abstract class DB_Adapter_Abstract_PHTest extends DB_Adapter_AbstractTest
 {
     /**
