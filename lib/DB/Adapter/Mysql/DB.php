@@ -43,6 +43,14 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         }
     }
 
+    /**
+     * For testing purposes only!
+     */
+    public function getLink()
+    {
+        return $this->_link;
+    }
+
     private function _connect()
     {
         $c = $this->_config;
