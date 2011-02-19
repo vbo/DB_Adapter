@@ -17,7 +17,7 @@ abstract class DB_Adapter_Abstract_DBTest extends DB_Adapter_AbstractTest
         $this->_dropTestTables();
     }
 
-    public function testQueryErrorExceptionRaises()
+    public function testQueryErrorRaisesException()
     {
         $this->setExpectedException('DB_Adapter_Exception_QueryError');
         $this->_getDB()->select('BAD QUERY');
