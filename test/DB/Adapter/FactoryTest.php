@@ -1,14 +1,15 @@
 <?php
 
-require_once 'PHPUnit/Framework.php';
+require_once dirname(__FILE__) . '/../../../lib/config.php';
 require_once 'DB/Adapter/Factory.php';
 
-/**
- * @group Generic
- * @group All
- */
 class DB_Adapter_FactoryTest extends PHPUnit_Framework_TestCase
 {
+    public function testConnectionFailed()
+    {
+        $this->setExpectedException('DB_Adapter_Exception_ConnectionError');
+        $failed = DB_Adapter_Factory::connect('mysql://not_existed:test@localhost/test?charset=utf8');
+    }
 
     /**
      * @dataProvider dsnProvider

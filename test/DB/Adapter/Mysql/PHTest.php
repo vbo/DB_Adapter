@@ -1,12 +1,8 @@
 <?php
 
-require_once 'DB/Adapter/AbstractTest.php';
+require_once dirname(__FILE__) . '/../Abstract/PHTest.php';
 
-/**
- * @group Mysql
- * @group All
- */
-class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
+class DB_Adapter_Mysql_PHTest extends DB_Adapter_Abstract_PHTest
 {
     protected $_dbtype = 'mysql';
 
@@ -14,7 +10,7 @@ class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
     {
         return array(
             array(1, "1"),
-            array('1a', "1"),
+            array('1a', "1"), // Php behavior
             array(1, "1"),
             array(null, "NULL"),
         );
@@ -24,7 +20,6 @@ class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
     {
         return array(
             array(1, "1"),
-            array(1.5, "1.5"),
             array(1.5, "1.5"),
             array(null, "NULL"),
         );
@@ -62,6 +57,14 @@ class DB_Adapter_MysqlTest extends DB_Adapter_AbstractTest
         return array(
             array('some', "`some`"),
             array(null, "``"),
+        );
+    }
+
+    public function linkPHDataProvider()
+    {
+        return array(
+            array(1, "1"),
+            array(null, "NULL"),
         );
     }
 }
