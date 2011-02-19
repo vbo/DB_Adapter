@@ -69,9 +69,6 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
         $link = @pg_connect($connectionString);
 
         if (!$link) {
-            if (!error_reporting()) {
-                return;
-            }
             require_once 'DB/Adapter/Exception/ConnectionError.php';
             throw new DB_Adapter_Exception_ConnectionError(
                 0, 'Connection failed', "pg_connect('{$connectionString}')", $this
@@ -162,15 +159,15 @@ class DB_Adapter_Postgresql_DB extends DB_Adapter_Generic_DB
             $hash = md5($queryMain[0]);
             if (!isset($this->prepareCache[$hash])) {
                 $this->prepareCache[$hash] = true;
-                $prepared = @pg_prepare($this->link, $hash, $queryMain[0]);                
-                if ($prepared === false) {                
+                $prepared = @pg_prepare($this->link, $hash, $queryMain[0]);
+                if ($prepared === false) {
                     return $this->_raiseError($queryMain[0], pg_last_error($this->link));
                 }
             } else {
                 // Prepare cache hit!
-            }            
+            }
             $result = @pg_execute($this->link, $hash, array_slice($queryMain, 1));
-        } else {            
+        } else {
             $this->_expandPlaceholders($queryMain, false);
             $result = @pg_query($this->link, $queryMain[0]);
         }
