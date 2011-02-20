@@ -29,6 +29,17 @@
             <meta name='yandex-verification' content='4943bcea597448f8' />
             <meta name="verify-reformal"     content="91a378e125753ad74b033e94" />
         <?php endif;?>
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-21532938-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
     </head>
     <body>
         <div id="wrap">
@@ -51,8 +62,7 @@
                 </h1>
 
                 <div id="hat_ad">
-                    <script type="text/javascript" src="http://ad.sweb.ru/b.js"></script>
-                    <script type="text/javascript">sweb_bans_show(1025, 15973);</script>
+                    
                 </div>
 
                 <div class="menu">
