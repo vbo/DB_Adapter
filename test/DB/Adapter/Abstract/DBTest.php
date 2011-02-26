@@ -20,18 +20,18 @@ abstract class DB_Adapter_Abstract_DBTest extends DB_Adapter_AbstractTest
     public function testQueryErrorRaisesException()
     {
         $this->setExpectedException('DB_Adapter_Exception_QueryError');
-        $this->_getDB()->select('BAD QUERY');
+        $this->_getDB()->query('BAD QUERY');
     }
 
     public function testQueryErrorNotRaisesWithAtSimbol()
     {
-        @$this->_getDB()->select('BAD QUERY');
+        @$this->_getDB()->query('BAD QUERY');
     }
 
     public function testQueryErrorExceptionPrimaryInfo()
     {
         try {
-            $this->_getDB()->select('BAD QUERY');
+            $this->_getDB()->query('BAD QUERY');
         } catch (DB_Adapter_Exception_QueryError $e) {
             $this->assertEquals('BAD QUERY', $e->primaryInfo);
         };

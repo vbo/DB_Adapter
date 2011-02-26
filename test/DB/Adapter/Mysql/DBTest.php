@@ -14,7 +14,7 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
         return @mysql_query($query, $this->_getDB()->getLink());
     }
 
-    private function _selectCell($query)
+    private function _fetchCell($query)
     {
         return mysql_result($this->_query($query), 0);
     }
@@ -24,13 +24,13 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
         $name = md5(time()) . 'db_adapter_unittest';
         $setted = 'bla';
         $this->_getDB()->query("SET @session.{$name} = '{$setted}'");
-        $getted = $this->_selectCell('SELECT @session.' . $name);
+        $getted = $this->_fetchCell('SELECT @session.' . $name);
         $this->assertEquals($getted, $setted);
     }
 
     public function testSelectRow()
     {
-        $user = $this->_getDB()->selectRow('SELECT * FROM test_user WHERE id = 1');
+        $user = $this->_getDB()->fetchRow('SELECT * FROM test_user WHERE id = 1');
         $this->assertEquals($user, array(
             'id' => 1,
             'login' => 'testTest',
@@ -41,7 +41,7 @@ class DB_Adapter_Mysql_DBTest extends DB_Adapter_Abstract_DBTest
 
     public function testSelectCell()
     {
-        $login = $this->_getDB()->selectCell('SELECT login FROM test_user WHERE id = 1');
+        $login = $this->_getDB()->fetchCell('SELECT login FROM test_user WHERE id = 1');
         $this->assertEquals($login, 'testTest');
     }
 

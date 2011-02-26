@@ -94,7 +94,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return $this->_performNewBlob($blob_id);
     }
 
-    public function transaction($mode=null)
+    public function beginTransaction($mode=null)
     {
         $this->_logQuery('-- START TRANSACTION ' . $mode);
         return $this->_performTransaction($mode);
@@ -106,20 +106,20 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return $this->_performCommit();
     }
 
-    public function rollback()
+    public function rollBack()
     {
         $this->_logQuery('-- ROLLBACK');
         return $this->_performRollback();
     }
 
-    public function select($query)
+    public function fetchAll($query)
     {
         $total = false;
         $args = func_get_args();
         return $this->_query($args, $total);
     }
 
-    public function selectPage(&$total, $query)
+    public function fetchPage(&$total, $query)
     {
         $total = true;
         $args = func_get_args();
@@ -127,7 +127,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return $this->_query($args, $total);
     }
 
-    public function selectRow($query)
+    public function fetchRow($query)
     {
         $total = false;
         $args = func_get_args();
@@ -142,7 +142,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return current($rows);
     }
 
-    public function selectCol($query)
+    public function fetchCol($query)
     {
         $total = false;
         $args = func_get_args();
@@ -154,7 +154,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return $rows;
     }
 
-    public function selectCell($query)
+    public function fetchCell($query)
     {
         $total = false;
         $args = func_get_args();
@@ -181,19 +181,19 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         return $this->_query($args, $total);
     }
 
-    public function escape($s, $isIdent=false)
+    public function escape($s, $isIdent = false)
     {
         return $this->_performEscape($s, $isIdent);
     }
 
-    public function setLogger(DB_Adapter_LoggerInterface $logger)
+    public function setLogger(DB_Adapter_LoggerInterface $logger = null)
     {
         $prev = $this->_logger;
         $this->_logger = $logger;
         return $prev;
     }
 
-    public function setIdentPrefix($prefix=null)
+    public function setIdentPrefix($prefix = null)
     {
         $old = $this->_identPrefix;
         if (!is_null($prefix)) {
@@ -210,12 +210,12 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
     /**
      * @return string
      */
-    protected abstract function _performEscape($s, $isIdent=false);
+    protected abstract function _performEscape($s, $isIdent = false);
 
     /**
      * @return DB_Adapter_Generic_Blob $blob
      */
-    protected abstract function _performNewBlob($blobid=null);
+    protected abstract function _performNewBlob($blobid = null);
 
     /**
      * @return array $fields List of BLOB fields names in result set
@@ -333,7 +333,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
         $result = $this->_transformResult($rows);
         if (is_array($result) && $total) {
             $this->_transformQuery($query, 'GET_TOTAL');
-            $total = $this->selectCell($query);
+            $total = $this->fetchCell($query);
         }
 
         return $result;

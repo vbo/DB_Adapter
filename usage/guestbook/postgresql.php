@@ -11,7 +11,7 @@ $DB = DB_Adapter_Factory::connect($dsn['postgresql']);
 $DB->setIdentPrefix('db_adapter_example_');
 prepareMessageTable($DB);
 
-$messages = $DB->select("SELECT * FROM ?_guestbook_message ORDER BY created DESC");
+$messages = $DB->fetchAll("SELECT * FROM ?_guestbook_message ORDER BY created DESC");
 if ($_POST) {
     addMessage($DB, $_POST);
     header('Location: ' . $_SERVER['REQUEST_URI']);

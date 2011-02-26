@@ -33,36 +33,12 @@ interface DB_Adapter_DBInterface
     public function getLastQuery($inline=false);
 
     /**
-     * Create new blob
-     * @return DB_Adapter_Generic_Blob
-     */
-    public function blob($blob_id = null);
-
-    /**
-     * Create new transaction.
-     * @return mixed
-     */
-    public function transaction($mode=null);
-
-    /**
-     * Commit the transaction.
-     * @return mixed
-     */
-    public function commit();
-
-    /**
-     * Rollback the transaction.
-     * @return mixed
-     */
-    public function rollback();
-
-    /**
      * Execute query and return the result.
      * @param  string  $query Query text
      * @param  mixed   [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash[]  $result
      */
-    public function select($query);
+    public function fetchAll($query);
 
     /**
      * Execute query and return the result.
@@ -71,7 +47,7 @@ interface DB_Adapter_DBInterface
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash[] $result
      */
-    public function selectPage(&$total, $query);
+    public function fetchPage(&$total, $query);
 
     /**
      * Return the first row of query result.
@@ -82,7 +58,7 @@ interface DB_Adapter_DBInterface
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return hash $result
      */
-    public function selectRow($query);
+    public function fetchRow($query);
 
     /**
      * Return the first column of query result as array.
@@ -90,7 +66,7 @@ interface DB_Adapter_DBInterface
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return array  $result
      */
-    public function selectCol($query);
+    public function fetchCol($query);
 
     /**
      * Return the first cell of the first column of query result.
@@ -99,7 +75,7 @@ interface DB_Adapter_DBInterface
      * @param  mixed  [$arg1, [$arg2, [$arg3]]] Placeholders values
      * @return scalar $result
      */
-    public function selectCell($query);
+    public function fetchCell($query);
 
     /**
      * Alias for select(). May be used for INSERT, UPDATE, etc... queries.
@@ -117,7 +93,7 @@ interface DB_Adapter_DBInterface
      * @param  bool   $isIdent Its identifier value?
      * @return string $escaped
      */
-    public function escape($s, $isIdent=false);
+    public function escape($s, $isIdent = false);
 
     /**
      * Set query logger called before each query is executed.
@@ -125,18 +101,43 @@ interface DB_Adapter_DBInterface
      * @param  DB_Adapter_LoggerI/null $logger New logger instance
      * @return DB_Adapter_LoggerI/null $logger Prev logger instance
      */
-    public function setLogger(DB_Adapter_LoggerInterface $logger);
+    public function setLogger(DB_Adapter_LoggerInterface $logger = null);
 
     /**
      * Set identifier prefix used for $_ placeholder.
      * @param  string $prefix New prefix
      * @return string $prefix Prev prefix
      */
-    public function setIdentPrefix($prefix=null);
+    public function setIdentPrefix($prefix = null);
 
     /**
      * Returns various statistical information.
      * @return array
      */
     public function getStatistics();
+
+    /**
+     * Create new transaction.
+     * @return mixed
+     */
+    public function beginTransaction($mode=null);
+
+    /**
+     * Commit the transaction.
+     * @return mixed
+     */
+    public function commit();
+
+    /**
+     * Rollback the transaction.
+     * @return mixed
+     */
+    public function rollBack();
+
+    /**
+     * Create new blob
+     * @return DB_Adapter_Generic_Blob
+     */
+    public function blob($blob_id = null);
+
 }

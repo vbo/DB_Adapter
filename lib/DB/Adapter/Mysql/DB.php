@@ -208,8 +208,8 @@ class DB_Adapter_MySQL_DB extends DB_Adapter_Generic_DB
         $errno = $this->_link ? mysql_errno($this->_link) : mysql_errno();
         $error = $this->_link ? mysql_error($this->_link) : mysql_error();
         $str_params = join("', '", $conn_params);
-        $primary_info = "{$func} ('{$str_params}')";
+        $primaryInfo = "{$func} ('{$str_params}')";
         require_once 'DB/Adapter/Exception/ConnectionError.php';
-        throw new DB_Adapter_Exception_ConnectionError($errno, $primary_info, $error, $this);
+        throw new DB_Adapter_Exception_ConnectionError($errno, $primaryInfo, $error, $this);
     }
 }
