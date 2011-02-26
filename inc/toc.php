@@ -5,12 +5,12 @@
             <li><a href="/docs/DSN/">Подключение и DSN</a></li>
             <li><a href="/docs/api/">API</a>
                 <ul>
-                    <li><a href="/docs/api/select/"    >select()</a></li>
-                    <li><a href="/docs/api/selectPage/">selectPage()</a></li>
-                    <li><a href="/docs/api/selectRow/" >selectRow()</a></li>
-                    <li><a href="/docs/api/selectCell/">selectCell()</a></li>
-                    <li><a href="/docs/api/selectCol/" >selectCol()</a></li>
-                    <li><a href="/docs/api/query/"     >query()</a></li>
+                    <li><a href="/docs/api/fetchAll/" >fetchAll()</a></li>
+                    <li><a href="/docs/api/fetchPage/">fetchPage()</a></li>
+                    <li><a href="/docs/api/fetchRow/" >fetchRow()</a></li>
+                    <li><a href="/docs/api/fetchCell/">fetchCell()</a></li>
+                    <li><a href="/docs/api/fetchCol/" >fetchCol()</a></li>
+                    <li><a href="/docs/api/query/"    >query()</a></li>
                 </ul>
             </li>
             <li><a href="/docs/placeholders/">Плейсхолдеры и макросы</a>

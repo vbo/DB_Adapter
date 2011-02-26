@@ -9,7 +9,7 @@ API
     вы сразу получаете то, что нужно
 
 *   **Представление результата определяется выбранным методом запроса**
-    Например, `selectRow()` возвращает строку таблицы, как ассоциативный массив, `selectCell()`
+    Например, `fetchRow()` возвращает строку таблицы, как ассоциативный массив, `fetchCell()`
     &mdash; содержимое ячейки в виде скаляра и т.д.
 
 
@@ -20,24 +20,24 @@ API
 выполнения запроса.
 
 <pre><code>// Выборка всего результата в виде списка ассоциативных массивов
-mixed DB_Adapter_Generic_DB::<a href="/docs/api/select/">select</a>(string $query [, $arg1 [, $arg2 ... ]])
+mixed DB_Adapter_Generic_DB::<a href="/docs/api/fetchAll/">fetchAll</a>(string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
 <pre><code>// Выборка первой строки результата в виде ассоциативного массива
-hash DB_Adapter_Generic_DB::<a href="/docs/api/selectRow/">selectRow</a>(string $query [, $arg1 [, $arg2 ... ]])
+hash DB_Adapter_Generic_DB::<a href="/docs/api/fetchRow/">fetchRow</a>(string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
 <pre><code>// Выборка результата в виде "столбца"
-array DB_Adapter_Generic_DB::<a href="/docs/api/selectCol/">selectCol</a>(string $query [, $arg1 [, $arg2 ... ]])
+array DB_Adapter_Generic_DB::<a href="/docs/api/fetchCol/">fetchCol</a>(string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
 <pre><code>// Выборка скалярного результата запроса (одной ячейки)
-scalar DB_Adapter_Generic_DB::<a href="/docs/api/selectCell/">selectCell</a>(string $query [, $arg1 [, $arg2 ... ]])
+scalar DB_Adapter_Generic_DB::<a href="/docs/api/fetchCell/">fetchCell</a>(string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
 <pre><code>// Выборка ограниченного результата в виде списка ассоциативных массивов
 // с занесением общего числа записей в переменную $total
-mixed DB_Adapter_Generic_DB::<a href="/docs/api/selectPage/">selectPage</a>(int& $total, string $query [, $arg1 [, $arg2 ... ]])
+mixed DB_Adapter_Generic_DB::<a href="/docs/api/fetchPage/">fetchPage</a>(int& $total, string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
 Как вы видите, все методы принимают список аргументов переменной длины. Аргумент `$query` представляет
@@ -49,7 +49,7 @@ mixed DB_Adapter_Generic_DB::<a href="/docs/api/selectPage/">selectPage</a>(int&
 // получаем список ID пользователей, которые нас НЕ интересуют
 $uids = getBadUserIds();
 
-$usersData = $DB->select("
+$usersData = $DB->fetchAll("
 
     SELECT * FROM tbl
     WHERE id NOT IN (?a)",

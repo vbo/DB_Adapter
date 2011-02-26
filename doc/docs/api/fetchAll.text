@@ -1,13 +1,13 @@
-select()
+fetchAll()
 ============
 
-<pre><code>mixed DB_Adapter_Generic_DB::<a href="/docs/api/select/">select</a>(string $query [, $arg1 [, $arg2 ... ]])
+<pre><code>mixed DB_Adapter_Generic_DB::<a href="/docs/api/fetchAll/">fetchAll</a>(string $query [, $arg1 [, $arg2 ... ]])
 </code></pre>
 
-Метод `select` является самым простым и универсальным методом библиотеки.
+Метод `fetchAll()` является самым простым и универсальным методом библиотеки.
 Он позволяет делать выборку всего результата и представлять его в виде списка ассоциативных массивов.
 
-    $users = $DB->select("
+    $users = $DB->fetchAll("
         SELECT * FROM ?_users
         LIMIT 10"
     );
@@ -23,7 +23,7 @@ select()
 
 Для примера, выберем пользователей в список, индексированный по их id в базе данных.
 
-    $users = $DB->select("
+    $users = $DB->fetchAll("
         SELECT *, id AS ARRAY_KEY
         FROM ?_users
         LIMIT 10"
@@ -37,7 +37,7 @@ select()
 
 В некоторых случаев мы можем использовать и более сложные структуры данных:
 
-    $attractions = $DB->select("
+    $attractions = $DB->fetchAll("
         SELECT *,
         country_id AS ARRAY_KEY_1,
         id AS ARRAY_KEY_2

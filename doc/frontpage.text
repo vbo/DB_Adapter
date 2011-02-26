@@ -25,7 +25,7 @@ $dsn = 'mysql://vb:qwerty@test?charset=utf8';
 $DB = DB_Adapter_Factory::connect($dsn);
 
 $userids = array(1, 2, 3, 7);
-$users = $DB->selectCol("
+$users = $DB->fetchCol("
 
     SELECT login AS ARRAY_KEY, mail
     FROM users
@@ -42,7 +42,7 @@ foreach ($users as $login=>$mail) {
 
 [fork]:          http://ru.wikipedia.org/wiki/Форк
 [DbSimple]:      http://dklab.ru/lib/DbSimple/
-[vb]:            mailto:vb@in-source.ru
+[vb]:            mailto:borodin.vadim@gmail.com
 [dev]:           http://db-adapter.in-source.ru/dev/
-[download]:      /download/
-[devstat]:       /development_status/
+[download]:      http://db-adapter.in-source.ru/download/
+[devstat]:       http://db-adapter.in-source.ru/development_status/
