@@ -10,8 +10,7 @@
  * It supports several types of handy and secure placeholders
  * and provide comfortable debugging.
  *
- * (c) DB_Adapter community
- * @see http://db-adapter.in-source.ru
+ * @see http://db-adapter.vbo.name
  *
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
@@ -22,7 +21,7 @@
  * version 2.1 of the License, or (at your option) any later version.
  * @see http://www.gnu.org/copyleft/lesser.html
  *
- * @author  Borodin Vadim <vb@in-source.ru>
+ * @author  Borodin Vadim <vbo@vbo.name>
  * @version 10.10 beta
  */
 
@@ -37,10 +36,7 @@ require_once 'lib/config.php';
     <a href="http://michelf.com/projects/php-markdown/">See also &rarr;</a>'
 );
 
-$request_uri = array_shift(
-        explode('?', $_SERVER['REQUEST_URI'])
-);
-
+$request_uri = array_shift(explode('?', $_SERVER['REQUEST_URI']));
 if ($request_uri == '/') {
     $request_uri = '/frontpage/';
 }

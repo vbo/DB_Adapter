@@ -17,7 +17,7 @@ define('DB_ADAPTER_SKIP', log(0));
  * and provide comfortable debugging.
  *
  * (c) DB_Adapter community
- * @see http://db-adapter.in-source.ru
+ * @see http://db-adapter.vbo.name
  * 
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
@@ -28,7 +28,7 @@ define('DB_ADAPTER_SKIP', log(0));
  * version 2.1 of the License, or (at your option) any later version.
  * @see http://www.gnu.org/copyleft/lesser.html
  *
- * @author  Borodin Vadim <vb@in-source.ru>
+ * @author  Borodin Vadim <vbo@vbo.name>
  * @version 10.10 beta
  */
 abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface

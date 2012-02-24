@@ -10,7 +10,7 @@
  * and provide comfortable debugging.
  *
  * (c) DB_Adapter community
- * @see http://db-adapter.in-source.ru
+ * @see http://db-adapter.vbo.name
  * 
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
@@ -21,10 +21,8 @@
  * version 2.1 of the License, or (at your option) any later version.
  * @see http://www.gnu.org/copyleft/lesser.html
  *
- * @author  Borodin Vadim <vb@in-source.ru>
+ * @author  Borodin Vadim <vbo@vbo.name>
  * @version 10.10 beta
- *
- * @todo Make DB_Adapter_DSN class and rewrite connectors
  */
 class DB_Adapter_Factory
 {
@@ -77,6 +75,10 @@ class DB_Adapter_Factory
         return $parsed;
     }
 
+    /**
+     * @param array $config
+     * @return DB_Adapter_Generic_DB
+     */
     private static function _loadDriver(array $config)
     {
         $classname = self::_determineDriverClassName($config['scheme']);
@@ -84,14 +86,13 @@ class DB_Adapter_Factory
             $path = str_replace('_', '/', $classname) . ".php";
             require_once $path;
         }
-
         return new $classname($config);
     }
 
-    private static function _determineDriverClassName($dbtype)
+    private static function _determineDriverClassName($db_type)
     {
-        $dbtype = ucfirst($dbtype);
-        $class = "DB_Adapter_{$dbtype}_DB";
+        $db_type = ucfirst($db_type);
+        $class = "DB_Adapter_{$db_type}_DB";
         return $class;
     }
 

@@ -43,6 +43,6 @@ foreach ($users as $login=>$mail) {
 [fork]:          http://ru.wikipedia.org/wiki/Форк
 [DbSimple]:      http://dklab.ru/lib/DbSimple/
 [vb]:            mailto:borodin.vadim@gmail.com
-[dev]:           http://db-adapter.in-source.ru/dev/
-[download]:      http://db-adapter.in-source.ru/download/
-[devstat]:       http://db-adapter.in-source.ru/development_status/
+[dev]:           http://db-adapter.vbo.name/dev/
+[download]:      http://db-adapter.vbo.name/download/
+[devstat]:       http://db-adapter.vbo.name/development_status/

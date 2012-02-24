@@ -12,7 +12,7 @@ require_once 'DB/Adapter/Generic/DB.php';
  * and provide comfortable debugging.
  *
  * (c) DB_Adapter community
- * @see http://db-adapter.in-source.ru
+ * @see http://db-adapter.vbo.name
  *
  * Original idea by Dmitry Koterov and Konstantin Zhinko
  * @see http://dklab.ru/lib/DbSimple/
@@ -23,7 +23,7 @@ require_once 'DB/Adapter/Generic/DB.php';
  * version 2.1 of the License, or (at your option) any later version.
  * @see http://www.gnu.org/copyleft/lesser.html
  *
- * @author  Borodin Vadim <vb@in-source.ru>
+ * @author  Borodin Vadim <vbo@vbo.name>
  * @version 10.10 beta
  *
  * @todo Add more comments

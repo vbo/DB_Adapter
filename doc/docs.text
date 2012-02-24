@@ -70,7 +70,7 @@ $DB = DB_Adapter_Factory::connect($dsn);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $user = array(
     'login' => 'vb',
-    'mail' => 'vb@in-source.ru'
+    'mail' => 'vbo@vbo.name'
 );
 
 $userid = $DB->query("
@@ -86,7 +86,7 @@ $userid = $DB->query("
 Для MySQL данный код передаст СУБД следующий запрос:
 
     INSERT INTO users (`login`, `mail`)
-    VALUES ('vb', 'vb@in-source.ru')
+    VALUES ('vb', 'vbo@vbo.name')
 
 Здорово, правда? =)
 
