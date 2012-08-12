@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Europe/Moscow');
+date_default_timezone_set('UTC');
 $sourceDir = dirname(dirname(__FILE__));
 $tmpDir = dirname($sourceDir) . '/tmp/';
 $destFile = $sourceDir . '/build/' . 'DB_Adapter__' . date('y.m') . '.zip';
