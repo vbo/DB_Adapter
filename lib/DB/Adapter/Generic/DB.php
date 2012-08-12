@@ -525,7 +525,7 @@ abstract class DB_Adapter_Generic_DB implements DB_Adapter_DBInterface
                     break;
 
                 case 'n': // Key
-                    return empty($value) ? 'NULL' : intval($value);
+                    return empty($value) ? 'NULL' : $this->escape($value);
                     break;
             }
 
